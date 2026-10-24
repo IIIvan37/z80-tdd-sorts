@@ -15,24 +15,26 @@ Budgets : trié et égaux 33n − 26, inversé 6n² + 22n − 21 NOPs.
 Le tri à bulles est livré : branche `bubble`, 13 étapes, algorithme B de Knuth avec la bulle portée dans E.
 Budgets : trié et égaux 12n + 6, inversé 8,5n² + 11,5n − 19 NOPs. Le rapport `bubble` garde les mesures de dix variantes.
 Les branches `intro`, `selection`, `insertion` et `bubble` sont poussées avec leurs tags, et figées.
-Les articles d'`intro`, de `selection` et d'`insertion`, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
+Les articles d'`intro`, de `selection`, d'`insertion` et de `bubble`, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
+L'article du tri à bulles, FR et EN, est en ligne (PR blog #9). Il clôt la série des trois tris simples.
 
 ## Prochaine action
 
-Écrire l'article FR et EN du tri à bulles dans `blog`, d'après les tags `bubble/*` et le rapport `bubble`.
+Compléter le tableau « Post | Code » du README du blog avec les trois tris, puis choisir le sujet après les trois tris.
 
 ## Questions ouvertes
 
 - pnpm 10 écrit le lockfile sans integrity quand son store contient déjà z80-tdd. pnpm 11.9 corrige ce bug.
   Faut-il mettre `packageManager` à pnpm 11, ou publier z80-tdd sur npm ? La publication annule l'ADR 0009 de z80-tdd.
 - Style des articles, trois points laissés à l'utilisateur : nombre de questions rhétoriques, titres imagés, ouverture sur l'article précédent.
+- Quel article après les trois tris simples ? L'article du tri à bulles ne promet rien.
 
 ## Articles
 
 - **intro** : branche `intro`, dernier tag `intro/11-green` · FR et EN dans `blog`, `tdd-cpc-find-min` · en ligne.
 - **selection** : branche `selection`, dernier tag `selection/10-guard` · FR et EN dans `blog`, `tdd-cpc-selection-sort` · en ligne.
 - **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · FR et EN dans `blog`, `tdd-cpc-insertion-sort` (PR blog #8) · en ligne.
-- **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · article pas encore écrit.
+- **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 
 ## Historique
 
@@ -43,3 +45,4 @@ Les articles d'`intro`, de `selection` et d'`insertion`, en français et en angl
 - 2026-10-24 · **insertion-push** : deux commentaires corrigés avant le push, `insertion` poussée, sélection mesurée sur trois entrées.
 - 2026-10-24 · **texte-insertion** : article FR et EN du tri par insertion (PR blog #8), revue code-review, rapport livré par la PR #9.
 - 2026-10-24 · **bubble** : grilling Q1 à Q9, dix variantes mesurées, tri à bulles en 13 étapes, guards prouvés par mutants (PR #10).
+- 2026-10-24 · **texte-bubble** : article FR et EN du tri à bulles (PR blog #9), mesures refaites, revue code-review.
