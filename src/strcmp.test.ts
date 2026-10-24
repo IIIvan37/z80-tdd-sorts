@@ -55,4 +55,10 @@ describe("strcmp", () => {
     expect(compare("AB", "AC")).toBe("<");
     expect(compare("AC", "AB")).toBe(">");
   });
+
+  // "A" is #C1 and "AB" is #41 #C2: the first bytes differ by bit 7 alone.
+  it("puts a string before a longer string that starts with it", () => {
+    expect(compare("A", "AB")).toBe("<");
+    expect(compare("AB", "A")).toBe(">");
+  });
 });
