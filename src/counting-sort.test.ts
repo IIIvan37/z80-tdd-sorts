@@ -40,4 +40,9 @@ describe("counting_sort", () => {
       0x05, 0x17, 0x30, 0x42, 0x99,
     ]);
   });
+
+  // #00 and #FF sit in the first and last counts: the scan must read all 256.
+  it("sorts #FF and #00, the two ends of the counts", () => {
+    expect(countingSort([0xff, 0x42, 0x00]).memory(ARRAY, 3)).toEqual([0x00, 0x42, 0xff]);
+  });
 });
