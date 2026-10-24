@@ -77,4 +77,11 @@ describe("insertion_sort", () => {
 
     expect(insertionSort(equal).nops).toBeLessThanOrEqual(33 * n - 26);
   });
+
+  // Reversed bytes are the slowest input: each key moves past the whole sorted run.
+  it.each([2, 16, 255])("sorts %i reversed bytes in 6n² + 22n − 21 NOPs at most", (n) => {
+    const reversed = Array.from({ length: n }, (_, i) => n - 1 - i);
+
+    expect(insertionSort(reversed).nops).toBeLessThanOrEqual(6 * n * n + 22 * n - 21);
+  });
 });
