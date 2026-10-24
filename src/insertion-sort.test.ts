@@ -52,4 +52,15 @@ describe("insertion_sort", () => {
     expect(run).toChangeOnly({ address: ARRAY + 1, length: 5 });
     expect(run.memory(ARRAY + 1, 5)).toEqual([0x05, 0x17, 0x30, 0x42, 0x99]);
   });
+
+  it("ignores a smaller byte right after the array", () => {
+    // Fresh memory already holds #00 there: this test says so out loud.
+    const run = program.run("insertion_sort", {
+      registers: { hl: ARRAY, b: 5 },
+      memory: [{ at: ARRAY, bytes: [0x42, 0x30, 0x05, 0x17, 0x99, 0x00] }],
+    });
+
+    expect(run).toChangeOnly({ address: ARRAY, length: 5 });
+    expect(run.memory(ARRAY, 5)).toEqual([0x05, 0x17, 0x30, 0x42, 0x99]);
+  });
 });
