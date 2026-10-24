@@ -28,4 +28,10 @@ describe("selection_sort", () => {
   it("swaps two bytes in the wrong order", () => {
     expect(selectionSort([0x42, 0x17]).memory(ARRAY, 2)).toEqual([0x17, 0x42]);
   });
+
+  it("sorts five bytes in any order", () => {
+    expect(selectionSort([0x42, 0x30, 0x05, 0x17, 0x99]).memory(ARRAY, 5)).toEqual([
+      0x05, 0x17, 0x30, 0x42, 0x99,
+    ]);
+  });
 });
