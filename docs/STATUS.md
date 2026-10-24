@@ -30,7 +30,7 @@ Budget : 14k + 22 NOPs, k = lettres égales sur 7 bits avant la lettre qui déci
 
 ## Prochaine action
 
-Relancer les angles simplification et efficacité de `simplify` sur `main...strcmp`, puis montrer les constats à Ivan.
+Relancer l'angle efficacité de `simplify` sur `main...strcmp`, puis montrer à Ivan les constats du rapport `strcmp`.
 
 ## Questions ouvertes
 
