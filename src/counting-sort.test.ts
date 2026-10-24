@@ -50,4 +50,11 @@ describe("counting_sort", () => {
   it("changes only the array, even with repeated bytes", () => {
     expect(countingSort([0x42, 0x17, 0x42, 0x17])).toChangeOnly({ address: ARRAY, length: 4 });
   });
+
+  // Equal bytes are the slowest input: one count, then n turns of the copy loop.
+  it.each([2, 16, 255])("sorts %i equal bytes in 20n + 2572 NOPs at most", (n) => {
+    const equal = Array.from({ length: n }, () => 0x42);
+
+    expect(countingSort(equal).nops).toBeLessThanOrEqual(20 * n + 2572);
+  });
 });
