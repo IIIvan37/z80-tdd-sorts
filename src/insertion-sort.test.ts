@@ -40,4 +40,16 @@ describe("insertion_sort", () => {
       0x05, 0x17, 0x30, 0x42, 0x99,
     ]);
   });
+
+  it("ignores a larger byte right before the array", () => {
+    // Fresh memory holds #00 next to ARRAY. The array starts one byte into the
+    // page, after the #FF, so a step back by DEC L or DEC HL reads the #FF.
+    const run = program.run("insertion_sort", {
+      registers: { hl: ARRAY + 1, b: 5 },
+      memory: [{ at: ARRAY, bytes: [0xff, 0x42, 0x30, 0x05, 0x17, 0x99] }],
+    });
+
+    expect(run).toChangeOnly({ address: ARRAY + 1, length: 5 });
+    expect(run.memory(ARRAY + 1, 5)).toEqual([0x05, 0x17, 0x30, 0x42, 0x99]);
+  });
 });
