@@ -11,13 +11,15 @@ Les tags `intro/*` gardent l'ancien lockfile : le README donne `--no-lockfile`.
 Le tri par sélection est livré : branche `selection`, 10 étapes. Pire cas mesuré : octets égaux, 6n² + 35n − 36 NOPs.
 Mesures hors tests : triée 5n² + 36n − 36, inversée ⌊11n²/2⌋ + 36n − 36 NOPs.
 Le tri par insertion est livré : branche `insertion`, 15 étapes, décalage par `LDD` en `11-refactor`.
-Budgets : trié et égaux 33n − 26, inversé 6n² + 22n − 21 NOPs. La branche et ses 15 tags sont poussés et figés.
-Sur l'entrée inversée, la sélection devient plus rapide que l'insertion à partir de n = 27.
-Les trois articles, en français et en anglais, sont en ligne. Ils vivent dans le dépôt `IIIvan37/blog` : ce dépôt-ci ne garde que le code.
+Budgets : trié et égaux 33n − 26, inversé 6n² + 22n − 21 NOPs.
+Le tri à bulles est livré : branche `bubble`, 13 étapes, algorithme B de Knuth avec la bulle portée dans E.
+Budgets : trié et égaux 12n + 6, inversé 8,5n² + 11,5n − 19 NOPs. Le rapport `bubble` garde les mesures de dix variantes.
+Les branches `intro`, `selection`, `insertion` et `bubble` sont poussées avec leurs tags, et figées.
+Les articles d'`intro`, de `selection` et d'`insertion`, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 
 ## Prochaine action
 
-Écrire le tri à bulles en TDD : grilling de sa liste de tests, puis branche `bubble` issue de `main`, avec un tag par étape.
+Écrire l'article FR et EN du tri à bulles dans `blog`, d'après les tags `bubble/*` et le rapport `bubble`.
 
 ## Questions ouvertes
 
@@ -30,7 +32,7 @@ Les trois articles, en français et en anglais, sont en ligne. Ils vivent dans l
 - **intro** : branche `intro`, dernier tag `intro/11-green` · FR et EN dans `blog`, `tdd-cpc-find-min` · en ligne.
 - **selection** : branche `selection`, dernier tag `selection/10-guard` · FR et EN dans `blog`, `tdd-cpc-selection-sort` · en ligne.
 - **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · FR et EN dans `blog`, `tdd-cpc-insertion-sort` (PR blog #8) · en ligne.
-- **bubble** : pas encore de branche.
+- **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · article pas encore écrit.
 
 ## Historique
 
@@ -40,3 +42,4 @@ Les trois articles, en français et en anglais, sont en ligne. Ils vivent dans l
 - 2026-10-24 · **insertion** : grilling Q1 à Q13, tri par insertion en 15 étapes, quatre versions mesurées, guards prouvés par mutants (PR #8).
 - 2026-10-24 · **insertion-push** : deux commentaires corrigés avant le push, `insertion` poussée, sélection mesurée sur trois entrées.
 - 2026-10-24 · **texte-insertion** : article FR et EN du tri par insertion (PR blog #8), revue code-review, rapport livré par la PR #9.
+- 2026-10-24 · **bubble** : grilling Q1 à Q9, dix variantes mesurées, tri à bulles en 13 étapes, guards prouvés par mutants (PR #10).
