@@ -65,4 +65,11 @@ describe("bubble_sort", () => {
 
     expect(bubbleSort(equal).nops).toBeLessThanOrEqual(12 * n + 6);
   });
+
+  // Reversed bytes are the slowest input: every pair swaps, each pass stops a byte earlier.
+  it.each([2, 16, 255])("sorts %i reversed bytes in 8.5n² + 11.5n − 19 NOPs at most", (n) => {
+    const reversed = Array.from({ length: n }, (_, i) => n - 1 - i);
+
+    expect(bubbleSort(reversed).nops).toBeLessThanOrEqual(8.5 * n * n + 11.5 * n - 19);
+  });
 });
