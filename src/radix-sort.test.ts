@@ -43,4 +43,8 @@ describe("radix_sort", () => {
   it("sorts two keys by their high byte", () => {
     expect(keysAfter(radixSort([0x0201, 0x0102]), 2)).toEqual([0x0102, 0x0201]);
   });
+
+  it("sorts #FFFF and #0000, the two ends of the keys", () => {
+    expect(keysAfter(radixSort([0xffff, 0x0000]), 2)).toEqual([0x0000, 0xffff]);
+  });
 });
