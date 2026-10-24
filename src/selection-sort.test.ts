@@ -1,0 +1,27 @@
+import { beforeAll, describe, expect, it } from "vitest";
+import { loadProgram, type Program, runMatchers } from "z80-tdd";
+
+expect.extend(runMatchers);
+
+// Where each test writes its array: free RAM, away from the Program at #4000.
+const ARRAY = 0x8000;
+
+describe("selection_sort", () => {
+  let program: Program;
+
+  beforeAll(async () => {
+    program = await loadProgram();
+  });
+
+  // Runs selection_sort on `bytes`, written at ARRAY.
+  function selectionSort(bytes: number[]) {
+    return program.run("selection_sort", {
+      registers: { hl: ARRAY, b: bytes.length },
+      memory: [{ at: ARRAY, bytes }],
+    });
+  }
+
+  it("leaves a one-byte array as it is", () => {
+    expect(selectionSort([0x42])).toLeaveMemoryUnchanged();
+  });
+});
