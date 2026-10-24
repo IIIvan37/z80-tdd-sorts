@@ -15,12 +15,13 @@ strcmp:
  cp a           ; Z, NC: equal
  ret
 .differ:
- xor (hl)       ; A: the bits where the two bytes differ
- cp #80
- ld a,(de)
- jr z,.one_ends ; the same letter, but only one string ends on it
+ xor (hl)
+ and #80        ; A: #80 if only one string ends on this letter, else #00
+ ex de,hl
+ xor (hl)       ; A: the byte of S1, with the bit 7 of S2
+ ex de,hl
  cp (hl)
- ret
-.one_ends:
+ ret nz         ; the letters differ: they decide
+ ld a,(de)      ; the same letter, but only one string ends on it
  add a,a        ; C: bit 7, set if S1 ends: the shorter string comes first
  ret
