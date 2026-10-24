@@ -7,10 +7,20 @@ strcmp:
 .loop:
  ld a,(de)
  cp (hl)
- ret nz         ; the first different byte decides
+ jr nz,.differ
  inc de
  inc hl
  rla            ; C: bit 7, set on the last letter of both strings
  jr nc,.loop
  cp a           ; Z, NC: equal
+ ret
+.differ:
+ xor (hl)       ; A: the bits where the two bytes differ
+ cp #80
+ ld a,(de)
+ jr z,.one_ends ; the same letter, but only one string ends on it
+ cp (hl)
+ ret
+.one_ends:
+ add a,a        ; C: bit 7, set if S1 ends: the shorter string comes first
  ret
