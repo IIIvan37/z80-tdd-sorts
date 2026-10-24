@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { loadProgram, type Program, runMatchers } from "z80-tdd";
+import { loadProgram, type MemoryRange, type Program, runMatchers } from "z80-tdd";
 
 expect.extend(runMatchers);
 
@@ -32,6 +32,13 @@ describe("radix_sort", () => {
     return Array.from({ length: count }, (_, i) => bytes[2 * i] | (bytes[2 * i + 1] << 8));
   }
 
+  // The Memory changes of a Run that lie in none of the `ranges`: toChangeOnly takes one range.
+  function changesOutside(run: ReturnType<typeof radixSort>, ranges: MemoryRange[]) {
+    return run.memoryChanges.filter(({ address }) =>
+      ranges.every((range) => ((address - range.address) & 0xffff) >= range.length),
+    );
+  }
+
   it("leaves a one-key array as it is", () => {
     expect(keysAfter(radixSort([0x1234]), 1)).toEqual([0x1234]);
   });
@@ -46,5 +53,20 @@ describe("radix_sort", () => {
 
   it("sorts #FFFF and #0000, the two ends of the keys", () => {
     expect(keysAfter(radixSort([0xffff, 0x0000]), 2)).toEqual([0x0000, 0xffff]);
+  });
+
+  // Out of its stack, which no test sees, radix_sort may write only these four ranges.
+  it("changes only the array, the buffer and its two tables", () => {
+    const keys = [0x0142, 0xffff, 0x0117, 0x0000, 0x0142];
+    const run = radixSort(keys);
+
+    expect(
+      changesOutside(run, [
+        { address: ARRAY, length: 2 * keys.length },
+        { address: BUFFER, length: 2 * keys.length },
+        program.range("counts", 256),
+        program.range("slots_hi", 256),
+      ]),
+    ).toEqual([]);
   });
 });
