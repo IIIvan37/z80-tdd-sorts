@@ -1,27 +1,26 @@
+; Sorts in place, smallest first, the array at HL, B bytes long (1 to 255).
+; The array stays within one 256-byte page: INC E keeps D on the page of H.
 insertion_sort:
  dec b          ; one pass for each byte but the first
  ret z
- ld d,0
+ ld c,0
 .next:
- inc d          ; D: the bytes of the sorted run
- inc l          ; HL: the next byte to insert
- push hl        ; the next pass starts from there
- ld e,d         ; E: the bytes the key can still move past
- ld a,(hl)      ; the key: the byte to insert
+ inc c          ; C: the bytes of the sorted run
+ push bc
+ ld d,h         ; DE: the next byte to insert, then the hole it leaves
+ ld e,l
+ inc e
+ push de        ; the next pass starts from there
+ ld a,(de)      ; the key: the byte to insert
+ ld b,0         ; BC: the bytes the key can still move past
 .shift:
- dec l
- cp (hl)
+ cp (hl)        ; HL: the byte before the hole
  jr nc,.place   ; the key is not below this byte
- ld c,(hl)      ; move this byte one place right
- inc l
- ld (hl),c
- dec l
- dec e
- jr nz,.shift
- dec l          ; the key goes first: .place steps back onto the first byte
+ ldd            ; move this byte into the hole; P/V: BC is not 0
+ jp pe,.shift
 .place:
- inc l
- ld (hl),a
- pop hl
+ ld (de),a
+ pop hl         ; HL: the last byte of the sorted run
+ pop bc
  djnz .next
  ret
