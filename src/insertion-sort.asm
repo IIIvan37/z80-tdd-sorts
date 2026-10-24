@@ -1,13 +1,20 @@
 insertion_sort:
  dec b
  ret z
- inc l
+ ld a,l
+ add a,b
+ ld l,a         ; HL: the last byte
  ld a,(hl)      ; the key: the byte to insert
+.shift:
  dec l
  cp (hl)
- ret nc         ; the key is not below the byte before it
- ld c,(hl)      ; move that byte one place right, and the key into its place
- ld (hl),a
+ jr nc,.place   ; the key is not below this byte
+ ld c,(hl)      ; move this byte one place right
  inc l
  ld (hl),c
+ dec l
+ jr .shift
+.place:
+ inc l
+ ld (hl),a
  ret
