@@ -3,5 +3,7 @@
 ; marks the last letter of a string, as in the CPC firmware. A string comes
 ; before a longer string that starts with it. A, HL and DE change, BC does not.
 strcmp:
- cp a
+ ld a,(hl)
+ ex de,hl
+ cp (hl)
  ret
