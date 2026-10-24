@@ -28,4 +28,10 @@ describe("insertion_sort", () => {
   it("swaps two bytes in the wrong order", () => {
     expect(insertionSort([0x42, 0x17]).memory(ARRAY, 2)).toEqual([0x17, 0x42]);
   });
+
+  it("moves the last byte to the front of a sorted run", () => {
+    expect(insertionSort([0x17, 0x30, 0x42, 0x05]).memory(ARRAY, 4)).toEqual([
+      0x05, 0x17, 0x30, 0x42,
+    ]);
+  });
 });
