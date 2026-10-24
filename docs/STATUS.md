@@ -15,12 +15,12 @@ Budgets : trié et égaux 33n − 26, inversé 6n² + 22n − 21 NOPs.
 Le tri à bulles est livré : branche `bubble`, 13 étapes, algorithme B de Knuth avec la bulle portée dans E.
 Budgets : trié et égaux 12n + 6, inversé 8,5n² + 11,5n − 19 NOPs. Le rapport `bubble` garde les mesures de dix variantes.
 Les branches `intro`, `selection`, `insertion` et `bubble` sont poussées avec leurs tags, et figées.
-Les articles d'`intro`, de `selection` et d'`insertion`, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
-L'article du tri à bulles, FR et EN, est écrit et revu : PR blog #9. Il clôt la série des trois tris simples.
+Les articles d'`intro`, de `selection`, d'`insertion` et de `bubble`, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
+L'article du tri à bulles, FR et EN, est en ligne (PR blog #9). Il clôt la série des trois tris simples.
 
 ## Prochaine action
 
-Relire et fusionner la PR blog #9 (article du tri à bulles), puis les PR de rapport de `z80-tdd-sorts`.
+Compléter le tableau « Post | Code » du README du blog avec les trois tris, puis choisir le sujet après les trois tris.
 
 ## Questions ouvertes
 
@@ -34,7 +34,7 @@ Relire et fusionner la PR blog #9 (article du tri à bulles), puis les PR de rap
 - **intro** : branche `intro`, dernier tag `intro/11-green` · FR et EN dans `blog`, `tdd-cpc-find-min` · en ligne.
 - **selection** : branche `selection`, dernier tag `selection/10-guard` · FR et EN dans `blog`, `tdd-cpc-selection-sort` · en ligne.
 - **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · FR et EN dans `blog`, `tdd-cpc-insertion-sort` (PR blog #8) · en ligne.
-- **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · pas encore en ligne.
+- **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 
 ## Historique
 
