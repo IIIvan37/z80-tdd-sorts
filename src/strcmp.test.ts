@@ -1,0 +1,48 @@
+import { beforeAll, describe, expect, it } from "vitest";
+import { loadProgram, type Program, runMatchers } from "z80-tdd";
+
+expect.extend(runMatchers);
+
+// Where each test writes its two strings: free RAM, away from the Program at #4000.
+const STRING_A = 0x8000;
+const STRING_B = 0x8100;
+
+// The bytes of `text`: one per letter, bit 7 set on the last one, as the CPC firmware writes them.
+function bytesOf(text: string) {
+  return Array.from(text, (letter, i) => letter.charCodeAt(0) | (i === text.length - 1 ? 0x80 : 0));
+}
+
+describe("strcmp", () => {
+  let program: Program;
+
+  beforeAll(async () => {
+    program = await loadProgram();
+  });
+
+  // Runs strcmp on `a` and `b`. The Run starts with Z and C both set, which no
+  // CP leaves.
+  function runStrcmp(a: string, b: string) {
+    return program.run("strcmp", {
+      registers: { hl: STRING_A, de: STRING_B },
+      flags: { z: true, c: true },
+      memory: [
+        { at: STRING_A, bytes: bytesOf(a) },
+        { at: STRING_B, bytes: bytesOf(b) },
+      ],
+    });
+  }
+
+  // Reads the answer of strcmp in the flags, as after CP: a Routine that keeps
+  // the flags as they are gives "unchanged", never a valid answer.
+  function compare(a: string, b: string) {
+    const { z, c } = runStrcmp(a, b).flags;
+
+    if (z && c) return "unchanged";
+    if (z) return "=";
+    return c ? "<" : ">";
+  }
+
+  it("finds two equal one-letter strings equal", () => {
+    expect(compare("A", "A")).toBe("=");
+  });
+});
