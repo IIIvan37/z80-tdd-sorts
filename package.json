@@ -1,0 +1,20 @@
+{
+  "name": "z80-tdd-sorts",
+  "private": true,
+  "description": "Sorting algorithms in Z80 assembly for the Amstrad CPC, written test-first with z80-tdd",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5",
+    "z80-tdd": "https://github.com/IIIvan37/z80-tdd/releases/download/v0.1.0/z80-tdd-0.1.0.tgz"
+  }
+}
