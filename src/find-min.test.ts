@@ -33,6 +33,10 @@ describe("find_min", () => {
     expect(findMin([0x42, 0x30, 0x05, 0x17, 0x99])).toHaveRegisters({ a: 0x05 });
   });
 
+  it("returns in DE the address of the smallest byte", () => {
+    expect(findMin([0x42, 0x30, 0x05, 0x17, 0x99])).toHaveRegisters({ de: ARRAY + 2 });
+  });
+
   it("compares the bytes as unsigned numbers: #F0 is above #10", () => {
     expect(findMin([0x10, 0xf0])).toHaveRegisters({ a: 0x10 });
   });
