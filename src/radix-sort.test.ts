@@ -69,4 +69,15 @@ describe("radix_sort", () => {
       ]),
     ).toEqual([]);
   });
+
+  // No branch of radix_sort depends on the keys: every input of n keys costs the same.
+  it.each([2, 16, 255])("sorts %i keys in 122n + 13406 NOPs at most, in any order", (n) => {
+    const equal = Array.from({ length: n }, () => 0x4242);
+    const sorted = Array.from({ length: n }, (_, i) => i * 0x0101);
+    const reversed = [...sorted].reverse();
+
+    for (const keys of [equal, sorted, reversed]) {
+      expect(radixSort(keys).nops).toBeLessThanOrEqual(122 * n + 13406);
+    }
+  });
 });
