@@ -1,9 +1,12 @@
 insertion_sort:
  dec b          ; one pass for each byte but the first
  ret z
+ ld d,0
 .next:
+ inc d          ; D: the bytes of the sorted run
  inc l          ; HL: the next byte to insert
- ld e,l         ; the next pass starts from there
+ push hl        ; the next pass starts from there
+ ld e,d         ; E: the bytes the key can still move past
  ld a,(hl)      ; the key: the byte to insert
 .shift:
  dec l
@@ -13,10 +16,12 @@ insertion_sort:
  inc l
  ld (hl),c
  dec l
- jr .shift
+ dec e
+ jr nz,.shift
+ dec l          ; the key goes first: .place steps back onto the first byte
 .place:
  inc l
  ld (hl),a
- ld l,e
+ pop hl
  djnz .next
  ret
