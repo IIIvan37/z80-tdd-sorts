@@ -45,10 +45,11 @@ describe("find_min", () => {
     expect(findMin([0x42, 0x30, 0x05, 0x17, 0x99])).toLeaveMemoryUnchanged();
   });
 
-  it("finds the smallest of 16 bytes in 172 NOPs at most", () => {
+  it("finds the smallest of 16 bytes in 189 NOPs at most", () => {
     // Falling bytes make every turn of the loop take its slower path.
     const falling = Array.from({ length: 16 }, (_, i) => 0xff - i);
 
-    expect(findMin(falling).nops).toBeLessThanOrEqual(172);
+    // The address in DE costs 2 NOPs at entry and 1 NOP for each new minimum.
+    expect(findMin(falling).nops).toBeLessThanOrEqual(189);
   });
 });
