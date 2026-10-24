@@ -83,4 +83,24 @@ describe("strcmp", () => {
   ])("keeps BC as it is, on %s and %s", (a, b) => {
     expect(runStrcmp(a, b, 0x1234)).toHaveRegisters({ bc: 0x1234 });
   });
+
+  // k counts the letters equal on 7 bits before the one that decides. A string
+  // that ends on the k-th letter counts it: "A" and "AB" have one equal letter.
+  it.each([0, 1, 10, 200])("compares after %i equal letters in 14k + 20 NOPs at most", (k) => {
+    const prefix = "A".repeat(k);
+
+    expect(runStrcmp(prefix + "B", prefix + "C").nops).toBeLessThanOrEqual(14 * k + 20);
+  });
+
+  it.each([1, 10, 200])("finds the end of a string after %i equal letters in 14k + 8 NOPs at most", (k) => {
+    const prefix = "A".repeat(k);
+
+    expect(runStrcmp(prefix, prefix + "B").nops).toBeLessThanOrEqual(14 * k + 8);
+  });
+
+  it.each([1, 10, 200])("finds two equal strings of %i letters in 14k + 4 NOPs at most", (k) => {
+    const text = "A".repeat(k);
+
+    expect(runStrcmp(text, text).nops).toBeLessThanOrEqual(14 * k + 4);
+  });
 });
