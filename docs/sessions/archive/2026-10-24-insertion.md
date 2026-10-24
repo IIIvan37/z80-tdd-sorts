@@ -48,7 +48,7 @@
 
 ## Décisions
 
-- Q1 à Q13 du grilling : la liste est dans « Fait ». Le [README](../../README.md) couvre la convention des tags.
+- Q1 à Q13 du grilling : la liste est dans « Fait ». Le [README](../../../README.md) couvre la convention des tags.
 - Q3 puis choix final : décalage par `LDD` en `11-refactor` (choix de l'utilisateur, après les mesures). « L'implémentation Sedgewick »
   de l'utilisateur est la version par échanges de la 4e édition.
 - Les deux commentaires : réécrits à leur commit d'origine (choix de l'utilisateur). La branche n'était pas encore poussée.

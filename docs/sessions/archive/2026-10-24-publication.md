@@ -23,7 +23,7 @@
 
 ## Décisions
 
-- Les articles vivent dans `blog`, pas ici : option A de l'utilisateur, une correction = une PR. Voir [README.md](../../README.md).
+- Les articles vivent dans `blog`, pas ici : option A de l'utilisateur, une correction = une PR. Voir [README.md](../../../README.md).
 - Pas d'anecdote inventée dans un article : l'ouverture part d'un fait que l'utilisateur donne.
 - Style des articles et pièges Netlify : notes `z80-tdd-sorts` et `blog` du coffre.
 
