@@ -3,8 +3,11 @@ find_min:
  ld a,(hl)
  dec b
  ret z
+.loop:
  inc hl
  cp (hl)
- ret c          ; A is below the second byte
+ jr c,.next     ; A is below this byte
  ld a,(hl)
+.next:
+ djnz .loop
  ret
