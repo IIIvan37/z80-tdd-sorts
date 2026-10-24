@@ -45,4 +45,11 @@ describe("selection_sort", () => {
     expect(run).toChangeOnly({ address: ARRAY, length: 5 });
     expect(run.memory(ARRAY, 5)).toEqual([0x05, 0x17, 0x30, 0x42, 0x99]);
   });
+
+  // Equal bytes are the slowest input: find_min takes a new minimum at each byte.
+  it.each([2, 16, 255])("sorts %i equal bytes in 6n² + 35n − 36 NOPs at most", (n) => {
+    const equal = Array.from({ length: n }, () => 0x42);
+
+    expect(selectionSort(equal).nops).toBeLessThanOrEqual(6 * n * n + 35 * n - 36);
+  });
 });
