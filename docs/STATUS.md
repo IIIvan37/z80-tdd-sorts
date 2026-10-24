@@ -10,14 +10,15 @@ L'introduction au TDD a ses 11 étapes sur la branche `intro`, taguées `intro/0
 La branche `intro` est figée : l'article publié cite ses tags.
 L'article, en français et en anglais, vit dans le dépôt `IIIvan37/blog` (slug `tdd-cpc-find-min`) : ce dépôt-ci ne garde que le code.
 La convention des branches et des tags est dans le [README](../README.md).
+Le lockfile de `main` a l'integrity du tarball de z80-tdd : pnpm ≥ 10.34.1 refuse un tarball sans integrity. Les tags `intro/*` gardent l'ancien lockfile : le README donne `pnpm install --no-lockfile`.
 
 ## Prochaine action
 
-Choisir le tri qui suit l'introduction, puis écrire sa liste de tests avant sa branche.
+Ajouter la note `--no-lockfile` aux deux articles de l'introduction, dans `blog`. Puis créer la branche `selection` depuis `intro/11-green`, et cherry-pick le commit qui corrige le lockfile. Ce premier commit n'a pas de tag.
 
 ## Questions ouvertes
 
-- Quel tri suit l'introduction ? Le tri par sélection réutilise `find_min`.
+- pnpm 10 écrit le lockfile sans integrity quand son store contient déjà z80-tdd. pnpm 11.9 corrige ce bug (PR pnpm #12491). Faut-il mettre `packageManager` à pnpm 11, ou publier z80-tdd sur npm ? La publication annule l'ADR 0009 de z80-tdd.
 
 ## Articles
 

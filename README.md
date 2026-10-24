@@ -5,8 +5,8 @@ Sorting algorithms in Z80 assembly for the Amstrad CPC, written test-first with 
 ## How the repository is organised
 
 - `main` holds the empty CPC project: the configuration, `src/main.asm` and the dependencies.
-- Each post has its own branch, which starts from `main`. The first one is `intro`, an introduction to TDD with a Routine that finds the smallest byte of an array.
-- Each commit of a branch is one step of the TDD cycle, and a tag names it: `<branch>/<NN>-red`, `<branch>/<NN>-green`, `<branch>/<NN>-refactor` or `<branch>/<NN>-guard`.
+- Each post has its own branch. It starts from `main`, or from the last tag of the post whose code it reuses. The first one is `intro`, an introduction to TDD with a Routine that finds the smallest byte of an array.
+- Each commit of a branch is one step of the TDD cycle. A branch that starts from a tag can start with a setup commit, which has no tag. A tag names each step: `<branch>/<NN>-red`, `<branch>/<NN>-green`, `<branch>/<NN>-refactor` or `<branch>/<NN>-guard`.
   - **red**: a new test, which fails.
   - **green**: the least code that makes every test pass.
   - **refactor**: a cleaner version of the code, with every test still passing.
@@ -26,6 +26,8 @@ pnpm test
 ```
 
 Check out the next tag of the post to see the next step. A `red` tag has a failing test on purpose.
+
+If you install on an `intro/*` tag, use `pnpm install --no-lockfile`. pnpm 10.34.1 or later refuses the lockfile of these tags (`ERR_PNPM_MISSING_TARBALL_INTEGRITY`). These tags never change, and their lockfile stays as it is.
 
 ## Licence
 
