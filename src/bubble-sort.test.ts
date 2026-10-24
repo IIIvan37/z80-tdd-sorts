@@ -58,4 +58,11 @@ describe("bubble_sort", () => {
 
     expect(bubbleSort(sorted).nops).toBeLessThanOrEqual(12 * n + 6);
   });
+
+  // A bubble never moves past a byte equal to it.
+  it.each([2, 16, 255])("sorts %i equal bytes in 12n + 6 NOPs at most", (n) => {
+    const equal = Array.from({ length: n }, () => 0x42);
+
+    expect(bubbleSort(equal).nops).toBeLessThanOrEqual(12 * n + 6);
+  });
 });
