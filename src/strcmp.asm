@@ -23,5 +23,6 @@ strcmp:
  cp (hl)
  ret nz         ; the letters differ: they decide
  ld a,(de)      ; the same letter, but only one string ends on it
+ or #7f         ; NZ after the ADD, even for the letter #00
  add a,a        ; C: bit 7, set if S1 ends: the shorter string comes first
  ret
