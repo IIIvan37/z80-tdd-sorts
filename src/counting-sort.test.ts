@@ -45,4 +45,9 @@ describe("counting_sort", () => {
   it("sorts #FF and #00, the two ends of the counts", () => {
     expect(countingSort([0xff, 0x42, 0x00]).memory(ARRAY, 3)).toEqual([0x00, 0x42, 0xff]);
   });
+
+  // A count of 2 or more must also go back to zero: the next call counts on top of it.
+  it("changes only the array, even with repeated bytes", () => {
+    expect(countingSort([0x42, 0x17, 0x42, 0x17])).toChangeOnly({ address: ARRAY, length: 4 });
+  });
 });
