@@ -16,15 +16,18 @@ Le tri à bulles est livré : branche `bubble`, 13 étapes, algorithme B de Knut
 Budgets : trié et égaux 12n + 6, inversé 8,5n² + 11,5n − 19 NOPs. Le rapport `bubble` garde les mesures de dix variantes.
 Le tri par comptage est livré : branche `counting`, 13 étapes, table `counts` à zéro en entrée et en sortie.
 Budgets : égaux (pire cas) 20n + 2 572, triée et inversée 19n + 2 573 NOPs. Le rapport `counting` garde les mesures des variantes.
-Les branches `intro`, `selection`, `insertion`, `bubble` et `counting` sont poussées avec leurs tags, et figées.
+Le radix sort est livré : branche `radix`, 10 étapes, clés de 16 bits, LSD en base 256, deux passes, buffer en DE.
+Le refactor `07-refactor` appelle deux fois une passe `.pass`, avec les clés en big-endian dans le buffer.
+Budget : 122n + 13 406 NOPs pour toute entrée, car aucun branchement ne dépend des clés.
+Les branches `intro`, `selection`, `insertion`, `bubble`, `counting` et `radix` sont poussées avec leurs tags, et figées.
 Les articles d'`intro`, des trois tris simples et du comptage, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
-Après le comptage, la série passe au radix sort. Son grilling est en pause après le tour 1 (Q1 à Q3, dans le dernier rapport).
 Le blog reçoit des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag : PR blog #11, ouverte, pas fusionnée.
+La question Q3(1) de cette PR reste sans réponse : tags sur la ligne de la date, ou sur une ligne à part.
 
 ## Prochaine action
 
-Après la fusion de la PR blog #11, reprendre le grilling du radix au tour 1 (Q1 à Q3, dans le dernier rapport).
+Écrire l'article FR et EN du radix dans `blog` (`tdd-cpc-radix-sort`), depuis les tags `radix/*`.
 
 ## Questions ouvertes
 
@@ -38,6 +41,7 @@ Après la fusion de la PR blog #11, reprendre le grilling du radix au tour 1 (Q1
 - **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · FR et EN dans `blog`, `tdd-cpc-insertion-sort` (PR blog #8) · en ligne.
 - **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
+- **radix** : branche `radix`, dernier tag `radix/10-guard` · article pas commencé.
 
 ## Historique
 
@@ -53,3 +57,6 @@ Après la fusion de la PR blog #11, reprendre le grilling du radix au tour 1 (Q1
 - 2026-10-24 · **texte-counting** : article FR et EN du comptage avec graphique SVG, mutants relancés, sans mention de Roudoudou.
 - 2026-10-24 · **texte-counting-push** : revue code-review, trois corrections, article du comptage publié (PR blog #10).
 - 2026-10-24 · **tags** : grilling des tags Q1 à Q6, `feat/tags` dans `blog`, code-review et simplify, PR blog #11, radix en pause.
+- 2026-10-24 · **radix-grilling** : tour 1 du radix confirmé, tours 2 à 4 acceptés (contrat, tables, tests, budgets, article).
+- 2026-10-24 · **radix-start** : design du radix confirmé, branche `radix` ouverte, étapes `01-red` et `02-green`.
+- 2026-10-24 · **radix-steps** : étapes `03-red` à `10-guard`, refactor par clés inversées, guards prouvés par mutants, `radix` poussée (PR #15).
