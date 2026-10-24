@@ -17,13 +17,13 @@ Budgets : trié et égaux 12n + 6, inversé 8,5n² + 11,5n − 19 NOPs. Le rappo
 Le tri par comptage est livré : branche `counting`, 13 étapes, table `counts` à zéro en entrée et en sortie.
 Budgets : égaux (pire cas) 20n + 2 572, triée et inversée 19n + 2 573 NOPs. Le rapport `counting` garde les mesures des variantes.
 Les branches `intro`, `selection`, `insertion`, `bubble` et `counting` sont poussées avec leurs tags, et figées.
-Les articles d'`intro` et des trois tris simples, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
-L'article du comptage est écrit en FR et EN, avec un graphique SVG des quatre tris (`blog/scripts/sort-chart.mjs`), pas encore publié.
+Les articles d'`intro`, des trois tris simples et du comptage, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
+L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
 Après le comptage, la série passe au radix sort, sur des clés de 16 bits ou des paires clé et données.
 
 ## Prochaine action
 
-Après relecture de l'utilisateur, commiter l'article du comptage dans `blog`, lancer `code-review`, puis pousser et ouvrir la PR blog.
+Lancer le grilling du radix sort (clés de 16 bits ou paires clé et données), sur une branche `radix` issue de `main`.
 
 ## Questions ouvertes
 
@@ -36,7 +36,7 @@ Après relecture de l'utilisateur, commiter l'article du comptage dans `blog`, l
 - **selection** : branche `selection`, dernier tag `selection/10-guard` · FR et EN dans `blog`, `tdd-cpc-selection-sort` · en ligne.
 - **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · FR et EN dans `blog`, `tdd-cpc-insertion-sort` (PR blog #8) · en ligne.
 - **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
-- **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` · écrit, pas encore publié.
+- **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 
 ## Historique
 
@@ -50,3 +50,4 @@ Après relecture de l'utilisateur, commiter l'article du comptage dans `blog`, l
 - 2026-10-24 · **texte-bubble** : article FR et EN du tri à bulles (PR blog #9), mesures refaites, revue code-review.
 - 2026-10-24 · **counting** : PR #9 à #12 fusionnées, grilling Q1 à Q13, tri par comptage en 13 étapes, guards prouvés par mutants.
 - 2026-10-24 · **texte-counting** : article FR et EN du comptage avec graphique SVG, mutants relancés, sans mention de Roudoudou.
+- 2026-10-24 · **texte-counting-push** : revue code-review, trois corrections, article du comptage publié (PR blog #10).
