@@ -32,6 +32,7 @@
 
 - Graphique : Q14 à Q16 du rapport `counting`, acceptées sans changement.
 - Pas de mention de Roudoudou dans les articles (consigne de l'utilisateur, note du coffre `z80-tdd-sorts`).
+- Le nom reste « tri par comptage », pas « tri panier » (réponse de l'utilisateur).
 
 ## Gate
 
@@ -47,8 +48,6 @@
   ici, ce rapport commité sur `docs/session-counting`, pas poussé (PR #13 ouverte, à fusionner par l'utilisateur).
 - **Questions posées à l'utilisateur, sans réponse :**
   - Accord pour commiter, lancer `code-review`, pousser et ouvrir la PR blog ?
-  - « Tri panier » : l'utilisateur a écrit ce nom. L'article garde « tri par comptage », nom de la série. « Tri par paniers » désigne d'habitude
-    le bucket sort. Faut-il « tri panier » dans le titre ou le texte ?
 - **Pièges :**
   - Ne réécrire aucune branche d'article : leurs tags sont publiés.
   - `~/.gitconfig` garde `ivan.duchaufforu@gmail.com` : commiter avec `git -c user.email=ivan.duchauffour@gmail.com`, aussi dans `blog`.
