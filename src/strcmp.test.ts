@@ -45,4 +45,9 @@ describe("strcmp", () => {
   it("finds two equal one-letter strings equal", () => {
     expect(compare("A", "A")).toBe("=");
   });
+
+  it("orders two one-letter strings by their letter", () => {
+    expect(compare("A", "B")).toBe("<");
+    expect(compare("B", "A")).toBe(">");
+  });
 });
