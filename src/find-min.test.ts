@@ -40,4 +40,11 @@ describe("find_min", () => {
   it("leaves the array as it found it", () => {
     expect(findMin([0x42, 0x30, 0x05, 0x17, 0x99])).toLeaveMemoryUnchanged();
   });
+
+  it("finds the smallest of 16 bytes in 172 NOPs at most", () => {
+    // Falling bytes make every turn of the loop take its slower path.
+    const falling = Array.from({ length: 16 }, (_, i) => 0xff - i);
+
+    expect(findMin(falling).nops).toBeLessThanOrEqual(172);
+  });
 });
