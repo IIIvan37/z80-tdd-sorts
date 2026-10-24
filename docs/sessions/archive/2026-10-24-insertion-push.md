@@ -32,7 +32,7 @@
 ## Décisions
 
 - Les deux commentaires : réécrits à leur commit d'origine, pas expliqués dans l'article (choix de l'utilisateur).
-  La convention des tags est dans le [README](../../README.md).
+  La convention des tags est dans le [README](../../../README.md).
 
 ## Gate
 

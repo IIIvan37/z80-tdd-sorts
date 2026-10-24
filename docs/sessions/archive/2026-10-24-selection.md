@@ -27,7 +27,7 @@
 
 ## Décisions
 
-- Un article par tri ; la complexité dans l'article sur la sélection ; branche issue du dernier tag d'un article : [README.md](../../README.md).
+- Un article par tri ; la complexité dans l'article sur la sélection ; branche issue du dernier tag d'un article : [README.md](../../../README.md).
 - Q18 : pas de matcher mémoire dans z80-tdd pour l'instant ; l'article signale l'affichage décimal de Vitest.
 - Un guard entre seulement si sa version cassée est réelle ; l'article dit quand d'autres tests l'attrapent aussi.
 
