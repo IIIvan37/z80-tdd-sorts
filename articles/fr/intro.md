@@ -1,20 +1,16 @@
 # TDD sur CPC : trouver le plus petit octet d'un tableau
 
-Écrire le test avant le code, en assembleur Z80, sur un Amstrad CPC. Ça paraît exotique, mais c'est exactement ce que je vous propose ici, avec une Routine toute bête : trouver le plus petit octet d'un tableau. C'est aussi le cœur du tri par sélection, qui viendra dans un prochain article.
+Le TDD, je le pratique tous les jours. En assembleur, en revanche, la pratique est bien plus rare : on assemble, on lance, on regarde l'écran, et on recommence. Est-ce que ça peut marcher sur un Amstrad CPC, en Z80 ? Pour le savoir, nous allons écrire une Routine toute bête, test après test : trouver le plus petit octet d'un tableau. C'est aussi le cœur du tri par sélection, qui viendra dans un prochain article.
 
-Le principe du TDD tient en trois temps :
+Le principe du TDD tient en trois temps. D'abord le rouge : on écrit un test, et il échoue. Puis le vert : on écrit le moins de code possible pour qu'il passe. Enfin le refactor : on nettoie, sans casser un seul test.
 
-- **rouge** : on écrit un test, qui échoue ;
-- **vert** : on écrit le moins de code possible pour qu'il passe ;
-- **refactor** : on nettoie, sans casser un seul test.
-
-Les tests tournent sous Vitest, avec [z80-tdd](https://github.com/IIIvan37/z80-tdd) : il assemble le source avec RASM, exécute la Routine sur un Z80 émulé, puis vérifie les registres, la mémoire et la durée en NOPs. Chaque étape de cet article est un commit du dépôt [z80-tdd-sorts](https://github.com/IIIvan37/z80-tdd-sorts), avec un tag à son nom : `git checkout intro/01-red`, puis `pnpm test`, et vous voyez ce que je vois.
+Les tests tournent sous Vitest, avec [z80-tdd](https://github.com/IIIvan37/z80-tdd) : il assemble le source avec RASM, exécute la Routine sur un Z80 émulé, puis vérifie les registres, la mémoire et la durée en NOPs. Chaque étape de cet article est un commit du dépôt [z80-tdd-sorts](https://github.com/IIIvan37/z80-tdd-sorts), avec un tag à son nom : un `git checkout intro/01-red`, un `pnpm test`, et on voit exactement ce que je vois.
 
 Le contrat, d'abord : HL pointe sur le tableau, B contient sa longueur (de 1 à 255), et la Routine rend le plus petit octet dans A.
 
-## Mise en place
+## La mise en place
 
-Il vous faut Node.js 24 ou plus, pnpm, et [RASM](https://github.com/EdouardBERGE/rasm/releases) v3.3.1 dans le PATH. z80-tdd n'est pas sur npm : il s'installe depuis le tarball de sa release GitHub, à côté de Vitest.
+Il faut Node.js 24 ou plus, pnpm, et [RASM](https://github.com/EdouardBERGE/rasm/releases) v3.3.1 dans le PATH. z80-tdd n'est pas sur npm : il s'installe depuis le tarball de sa release GitHub, à côté de Vitest.
 
 ```sh
 pnpm add -D https://github.com/IIIvan37/z80-tdd/releases/download/v0.1.0/z80-tdd-0.1.0.tgz vitest
@@ -28,7 +24,7 @@ import { defineConfig } from "z80-tdd";
 export default defineConfig({ source: "src/main.asm" });
 ```
 
-Ce source est le vrai programme du projet, celui que vous assemblez d'habitude. Ici, il place le code en `#4000` et inclut la Routine à tester :
+Ce source est le vrai programme du projet, celui qu'on assemble d'habitude. Ici, il place le code en `#4000` et inclut la Routine à tester :
 
 ```z80
  org #4000
@@ -56,7 +52,7 @@ describe("find_min", () => {
 
 `pnpm vitest run` lance le tout. Une Routine qui ne revient jamais ne bloque pas les tests : au-delà d'un million de NOPs, z80-tdd arrête la Routine et affiche les dernières instructions exécutées.
 
-## Étape 1 : un seul octet
+## Un octet, et déjà de la triche
 
 Le premier test est le plus simple possible : un tableau d'un octet ([intro/01-red](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/01-red)).
 
@@ -89,7 +85,7 @@ find_min:
 
 Oui, c'est de la triche. Mais le test passe, et c'est tout ce qu'on lui demande.
 
-## Étape 2 : deux octets
+## Deux octets pour démasquer la triche
 
 Pour démasquer la triche, il faut un test qui la met en défaut : deux octets, le plus petit en second ([intro/03-red](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/03-red)).
 
@@ -116,9 +112,9 @@ find_min:
  ret
 ```
 
-`cp (hl)` calcule A − (HL) sans garder le résultat : la retenue est mise si A est plus petit. Une seule comparaison suffit pour deux octets. Pas plus.
+`cp (hl)` calcule A − (HL) sans garder le résultat : la retenue est mise si A est plus petit. Une seule comparaison suffit pour deux octets. Pas plus !
 
-## Étape 3 : la boucle
+## La boucle s'impose
 
 Cinq octets, le plus petit au milieu ([intro/05-red](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/05-red)) :
 
@@ -130,7 +126,7 @@ expect(run).toHaveRegisters({ a: 0x05 }); // avec bytes: [0x42, 0x30, 0x05, 0x17
   A  expected #05, received #30
 ```
 
-Cette fois, la boucle s'impose ([intro/06-green](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/06-green)) :
+Cette fois, plus moyen d'y couper ([intro/06-green](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/06-green)) :
 
 ```z80
 find_min:
@@ -147,7 +143,7 @@ find_min:
  ret
 ```
 
-## Étape 4 : le refactor
+## Les tests aussi se refactorent
 
 Le code va bien, mais les tests se répètent : trois fois le même appel à `program.run`, à la longueur près. Le refactor s'applique aussi aux tests ([intro/07-refactor](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/07-refactor)) :
 
@@ -166,9 +162,9 @@ it("returns the smallest byte wherever it is", () => {
 
 B vient maintenant de la longueur du tableau : un test ne peut plus se tromper de longueur. Tous les tests restent verts.
 
-## Étape 5 : deux tests de garde
+## Le signe qui ment, et l'octet écrasé
 
-Les deux tests suivants passent dès leur écriture. En TDD, un test qui passe d'emblée est suspect : rien ne prouve qu'il sait échouer. Je les tague donc `guard`, et je vérifie qu'ils attrapent une version cassée de la Routine.
+Les deux tests suivants passent dès leur écriture. En TDD, un test qui passe d'emblée est suspect : qui nous dit qu'il sait échouer ? Je les tague donc `guard`, et je vérifie que chacun attrape une version cassée de la Routine.
 
 Le premier vérifie la comparaison sans signe ([intro/08-guard](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/08-guard)) :
 
@@ -178,7 +174,7 @@ it("compares the bytes as unsigned numbers: #F0 is above #10", () => {
 });
 ```
 
-L'erreur classique, c'est de tester le signe du résultat avec `jp m,.next` au lieu de la retenue. Avec cette version, `#10 − #F0` donne `#20`, positif, et la Routine garde `#F0` :
+L'erreur classique, c'est de tester le signe du résultat avec `jp m,.next` au lieu de la retenue. Avec cette version, `#10 − #F0` donne `#20`, positif, et la Routine garde `#F0`. Bingo :
 
 ```text
   A  expected #10, received #F0
@@ -200,9 +196,9 @@ Error: Memory changed:
   #8004  #99 -> #05
 ```
 
-## Étape 6 : un budget en NOPs
+## Un budget en NOPs
 
-Sur CPC, une Routine juste ne suffit pas : il faut qu'elle tienne dans le temps. z80-tdd compte la durée de chaque instruction en NOPs, d'après la table de Madram / Overlanders (*Perfectly accurate Z80 flags and CPC timing*, 64NOPS). Un test peut donc fixer un budget ([intro/10-red](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/10-red)) :
+Sur CPC, une Routine juste ne suffit pas : il faut qu'elle tienne dans le temps. z80-tdd compte la durée de chaque instruction en NOPs, d'après la table de Madram / Overlanders. Un test peut donc fixer un budget ([intro/10-red](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/10-red)) :
 
 ```ts
 it("finds the smallest of 16 bytes in 172 NOPs at most", () => {
@@ -219,7 +215,7 @@ AssertionError: expected 187 to be less than or equal to 172
 
 Le compte se refait à la main. L'entrée coûte 5 NOPs : `ld a,(hl)` 2, `dec b` 1, `ret z` 2 quand il ne sort pas. Un tour où le minimum change coûte 12 NOPs : `inc hl` 2, `cp (hl)` 2, `jr c` 2 quand il ne saute pas, `ld a,(hl)` 2, `djnz` 4. Quinze tours, moins 1 NOP pour le dernier `djnz`, plus 3 pour le `ret` : 5 + 179 + 3 = 187.
 
-Pour gagner 15 NOPs, un grand classique ([intro/11-green](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/11-green)) :
+Pour gagner 15 NOPs, rien de plus simple, c'est un grand classique ([intro/11-green](https://github.com/IIIvan37/z80-tdd-sorts/tree/intro/11-green)) :
 
 ```z80
 ; Returns in A the smallest byte of the array at HL, B bytes long (1 to 255).
@@ -239,3 +235,14 @@ find_min:
 ```
 
 `inc l` coûte 1 NOP, `inc hl` en coûte 2 : 1 NOP de gagné par tour, 172 au total. Le prix à payer est écrit dans le contrat : le tableau ne doit pas franchir une frontière de page. Les six tests restent verts, budget compris.
+
+## Conclusion
+
+Onze étapes pour une Routine de neuf instructions, ça peut sembler beaucoup. Mais chaque test reste dans le dépôt : si une optimisation future casse la comparaison sans signe, ou dépasse le budget, on le saura tout de suite, avec l'adresse ou le registre fautif. Le tri par sélection pourra partir de cette Routine.
+
+## Liens
+
+- [z80-tdd](https://github.com/IIIvan37/z80-tdd), l'outil de test, et sa [release 0.1.0](https://github.com/IIIvan37/z80-tdd/releases/tag/v0.1.0)
+- [z80-tdd-sorts](https://github.com/IIIvan37/z80-tdd-sorts), le dépôt de cet article (branche `intro`)
+- [RASM](https://github.com/EdouardBERGE/rasm), l'assembleur
+- *Perfectly accurate Z80 flags and CPC timing*, Madram / Overlanders (64NOPS), la table des durées en NOPs
