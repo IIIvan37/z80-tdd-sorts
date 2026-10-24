@@ -28,4 +28,10 @@ describe("counting_sort", () => {
   it("swaps two bytes in the wrong order", () => {
     expect(countingSort([0x42, 0x17]).memory(ARRAY, 2)).toEqual([0x17, 0x42]);
   });
+
+  it("keeps every copy of a repeated byte", () => {
+    expect(countingSort([0x42, 0x17, 0x42, 0x17]).memory(ARRAY, 4)).toEqual([
+      0x17, 0x17, 0x42, 0x42,
+    ]);
+  });
 });
