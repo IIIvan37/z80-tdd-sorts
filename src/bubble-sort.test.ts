@@ -28,4 +28,10 @@ describe("bubble_sort", () => {
   it("swaps two bytes in the wrong order", () => {
     expect(bubbleSort([0x42, 0x17]).memory(ARRAY, 2)).toEqual([0x17, 0x42]);
   });
+
+  it("moves the first byte to the end of a sorted run", () => {
+    expect(bubbleSort([0x42, 0x05, 0x17, 0x30]).memory(ARRAY, 4)).toEqual([
+      0x05, 0x17, 0x30, 0x42,
+    ]);
+  });
 });
