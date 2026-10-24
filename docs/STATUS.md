@@ -19,12 +19,14 @@ Budgets : égaux (pire cas) 20n + 2 572, triée et inversée 19n + 2 573 NOPs. L
 Les branches `intro`, `selection`, `insertion`, `bubble` et `counting` sont poussées avec leurs tags, et figées.
 Les articles d'`intro`, des trois tris simples et du comptage, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
-Après le comptage, la série passe au radix sort. Son grilling est en pause après le tour 1 (Q1 à Q3, dans le dernier rapport).
+Après le comptage, la série passe au radix sort : clés de 16 bits, LSD en base 256, deux passes, buffer en DE.
+Le grilling du radix est fini (tours 1 à 4, dans les rapports). La synthèse du design attend la confirmation de l'utilisateur.
 Le blog reçoit des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag : PR blog #11, ouverte, pas fusionnée.
+La question Q3(1) de cette PR reste sans réponse : tags sur la ligne de la date, ou sur une ligne à part.
 
 ## Prochaine action
 
-Après la fusion de la PR blog #11, reprendre le grilling du radix au tour 1 (Q1 à Q3, dans le dernier rapport).
+Faire confirmer la synthèse du design du radix, puis créer `radix` depuis `main` et écrire le test 1 (une clé).
 
 ## Questions ouvertes
 
@@ -53,3 +55,4 @@ Après la fusion de la PR blog #11, reprendre le grilling du radix au tour 1 (Q1
 - 2026-10-24 · **texte-counting** : article FR et EN du comptage avec graphique SVG, mutants relancés, sans mention de Roudoudou.
 - 2026-10-24 · **texte-counting-push** : revue code-review, trois corrections, article du comptage publié (PR blog #10).
 - 2026-10-24 · **tags** : grilling des tags Q1 à Q6, `feat/tags` dans `blog`, code-review et simplify, PR blog #11, radix en pause.
+- 2026-10-24 · **radix-grilling** : tour 1 du radix confirmé, tours 2 à 4 acceptés (contrat, tables, tests, budgets, article).
