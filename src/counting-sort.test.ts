@@ -34,4 +34,10 @@ describe("counting_sort", () => {
       0x17, 0x17, 0x42, 0x42,
     ]);
   });
+
+  it("sorts five bytes in any order", () => {
+    expect(countingSort([0x42, 0x30, 0x05, 0x17, 0x99]).memory(ARRAY, 5)).toEqual([
+      0x05, 0x17, 0x30, 0x42, 0x99,
+    ]);
+  });
 });
