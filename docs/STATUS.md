@@ -26,11 +26,11 @@ Les articles du blog portent des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une
 Les tags sont dans la ligne de la date. Le schéma du blog exige au moins un tag par article.
 La série continue sur des références vers des données fixes : `strcmp`, puis un tri de pointeurs vers des chaînes.
 `strcmp` est écrite en local : branche `strcmp`, 14 étapes taguées, non poussée. Chaînes à bit 7 final, sortie comme `CP`.
-Budget : 14k + 22 NOPs, k = lettres égales sur 7 bits avant la lettre qui décide. Revue code-review faite, `simplify` partiel.
+Budget : 14k + 22 NOPs, k = lettres égales sur 7 bits avant la lettre qui décide. Revue code-review et `simplify` faites.
 
 ## Prochaine action
 
-Relancer l'angle efficacité de `simplify` sur `main...strcmp`, puis montrer à Ivan les constats du rapport `strcmp`.
+Faire choisir Ivan : `.differ` avec E (14k + 20 NOPs) dans `13-green` par reconstruction, ou en étape refactor.
 
 ## Questions ouvertes
 
@@ -65,4 +65,4 @@ Relancer l'angle efficacité de `simplify` sur `main...strcmp`, puis montrer à 
 - 2026-10-24 · **radix-steps** : étapes `03-red` à `10-guard`, refactor par clés inversées, guards prouvés par mutants, `radix` poussée (PR #15).
 - 2026-10-24 · **texte-radix** : article FR et EN du radix (PR blog #12), mutants relancés, coûts vérifiés, revue code-review.
 - 2026-10-24 · **tags-merge** : Q3(1) tranchée (tags dans la ligne de la date), merge testé par un build, PR blog #11 fusionnée.
-- 2026-10-24 · **strcmp** : série des chaînes choisie, `strcmp` en 14 étapes locales, code-review et 3 corrections, `simplify` partiel.
+- 2026-10-24 · **strcmp** : série des chaînes choisie, `strcmp` en 14 étapes locales, code-review et 3 corrections, `simplify`.
