@@ -407,7 +407,7 @@ packages:
     hasBin: true
 
   z80-tdd@https://github.com/IIIvan37/z80-tdd/releases/download/v0.1.0/z80-tdd-0.1.0.tgz:
-    resolution: {tarball: https://github.com/IIIvan37/z80-tdd/releases/download/v0.1.0/z80-tdd-0.1.0.tgz}
+    resolution: {integrity: sha512-dz9kujG0uoPIDrd+9srDIY9TlhhcIAD1RdAg4KjNKFegM2CyBiF2Og0IihUKgW7zuotwa3bhuHAH8LPY4/FuJg==, tarball: https://github.com/IIIvan37/z80-tdd/releases/download/v0.1.0/z80-tdd-0.1.0.tgz}
     version: 0.1.0
     engines: {node: '>=24'}
     peerDependencies:
