@@ -16,10 +16,13 @@ counting_sort:
  ld a,(hl)
  or a
  jr z,.next
+ ld b,a         ; B: the copies of this byte to write
  ld (hl),0      ; the count goes back to zero for the next call
  ld a,l
+.copy:
  ld (de),a
  inc e
+ djnz .copy
 .next:
  inc l
  jr nz,.scan
