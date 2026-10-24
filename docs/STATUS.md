@@ -20,14 +20,15 @@ Le radix sort est livré : branche `radix`, 10 étapes, clés de 16 bits, LSD en
 Le refactor `07-refactor` appelle deux fois une passe `.pass`, avec les clés en big-endian dans le buffer.
 Budget : 122n + 13 406 NOPs pour toute entrée, car aucun branchement ne dépend des clés.
 Les branches `intro`, `selection`, `insertion`, `bubble`, `counting` et `radix` sont poussées avec leurs tags, et figées.
-Les articles d'`intro`, des trois tris simples et du comptage, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
+Les articles d'`intro`, des trois tris simples, du comptage et du radix, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
 Le blog reçoit des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag : PR blog #11, ouverte, pas fusionnée.
 La question Q3(1) de cette PR reste sans réponse : tags sur la ligne de la date, ou sur une ligne à part.
+L'article du radix porte déjà `tags` : le schéma de `main` ignore ce champ, celui de la PR #11 l'exige.
 
 ## Prochaine action
 
-Écrire l'article FR et EN du radix dans `blog` (`tdd-cpc-radix-sort`), depuis les tags `radix/*`.
+Trancher la question Q3(1) de la PR blog #11 (tags), puis fusionner cette PR.
 
 ## Questions ouvertes
 
@@ -41,7 +42,7 @@ La question Q3(1) de cette PR reste sans réponse : tags sur la ligne de la date
 - **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · FR et EN dans `blog`, `tdd-cpc-insertion-sort` (PR blog #8) · en ligne.
 - **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
-- **radix** : branche `radix`, dernier tag `radix/10-guard` · article pas commencé.
+- **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
 
 ## Historique
 
@@ -60,3 +61,4 @@ La question Q3(1) de cette PR reste sans réponse : tags sur la ligne de la date
 - 2026-10-24 · **radix-grilling** : tour 1 du radix confirmé, tours 2 à 4 acceptés (contrat, tables, tests, budgets, article).
 - 2026-10-24 · **radix-start** : design du radix confirmé, branche `radix` ouverte, étapes `01-red` et `02-green`.
 - 2026-10-24 · **radix-steps** : étapes `03-red` à `10-guard`, refactor par clés inversées, guards prouvés par mutants, `radix` poussée (PR #15).
+- 2026-10-24 · **texte-radix** : article FR et EN du radix (PR blog #12), mutants relancés, coûts vérifiés, revue code-review.
