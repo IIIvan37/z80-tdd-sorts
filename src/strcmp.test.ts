@@ -19,11 +19,11 @@ describe("strcmp", () => {
     program = await loadProgram();
   });
 
-  // Runs strcmp on `a` and `b`. The Run starts with Z and C both set, which no
-  // CP leaves.
-  function runStrcmp(a: string, b: string) {
+  // Runs strcmp on `a` and `b`, with BC set to `bc`. The Run starts with Z and C
+  // both set, which no CP leaves.
+  function runStrcmp(a: string, b: string, bc = 0) {
     return program.run("strcmp", {
-      registers: { hl: STRING_A, de: STRING_B },
+      registers: { hl: STRING_A, de: STRING_B, bc },
       flags: { z: true, c: true },
       memory: [
         { at: STRING_A, bytes: bytesOf(a) },
@@ -66,5 +66,15 @@ describe("strcmp", () => {
   it("compares the last letter of a string without its end mark", () => {
     expect(compare("A", "BC")).toBe("<");
     expect(compare("BC", "A")).toBe(">");
+  });
+
+  // The sort that calls strcmp keeps its count in B.
+  it.each([
+    ["A", "A"],
+    ["AB", "AC"],
+    ["A", "AB"],
+    ["A", "BC"],
+  ])("keeps BC as it is, on %s and %s", (a, b) => {
+    expect(runStrcmp(a, b, 0x1234)).toHaveRegisters({ bc: 0x1234 });
   });
 });
