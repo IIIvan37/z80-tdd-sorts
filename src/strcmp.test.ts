@@ -68,6 +68,12 @@ describe("strcmp", () => {
     expect(compare("BC", "A")).toBe(">");
   });
 
+  // "\0" is #80 and "\0\0" is #00 #80: twice #80 is #00, which sets Z.
+  it("puts a string that ends on the letter #00 before a longer one", () => {
+    expect(compare("\0", "\0\0")).toBe("<");
+    expect(compare("\0\0", "\0")).toBe(">");
+  });
+
   // The sort that calls strcmp keeps its count in B.
   it.each([
     ["A", "A"],
