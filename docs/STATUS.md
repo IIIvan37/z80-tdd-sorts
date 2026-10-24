@@ -20,13 +20,14 @@ Les branches `intro`, `selection`, `insertion`, `bubble` et `counting` sont pous
 Les articles d'`intro`, des trois tris simples et du comptage, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
 Après le comptage, la série passe au radix sort : clés de 16 bits, LSD en base 256, deux passes, buffer en DE.
-Le grilling du radix est fini (tours 1 à 4, dans les rapports). La synthèse du design attend la confirmation de l'utilisateur.
+Le grilling du radix est fini (tours 1 à 4, dans les rapports). L'utilisateur a confirmé la synthèse du design.
+Le radix est en cours : branche `radix` issue de `main`, locale, tags `radix/01-red` (une clé) et `radix/02-green` (`ret`).
 Le blog reçoit des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag : PR blog #11, ouverte, pas fusionnée.
 La question Q3(1) de cette PR reste sans réponse : tags sur la ligne de la date, ou sur une ligne à part.
 
 ## Prochaine action
 
-Faire confirmer la synthèse du design du radix, puis créer `radix` depuis `main` et écrire le test 1 (une clé).
+Faire accepter le test `radix/03-red` (deux clés, tri par l'octet faible), puis l'écrire sur la branche `radix`.
 
 ## Questions ouvertes
 
@@ -40,6 +41,7 @@ Faire confirmer la synthèse du design du radix, puis créer `radix` depuis `mai
 - **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · FR et EN dans `blog`, `tdd-cpc-insertion-sort` (PR blog #8) · en ligne.
 - **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
+- **radix** : branche `radix`, locale, dernier tag `radix/02-green` · article pas commencé.
 
 ## Historique
 
@@ -56,3 +58,4 @@ Faire confirmer la synthèse du design du radix, puis créer `radix` depuis `mai
 - 2026-10-24 · **texte-counting-push** : revue code-review, trois corrections, article du comptage publié (PR blog #10).
 - 2026-10-24 · **tags** : grilling des tags Q1 à Q6, `feat/tags` dans `blog`, code-review et simplify, PR blog #11, radix en pause.
 - 2026-10-24 · **radix-grilling** : tour 1 du radix confirmé, tours 2 à 4 acceptés (contrat, tables, tests, budgets, article).
+- 2026-10-24 · **radix-start** : design du radix confirmé, branche `radix` ouverte, étapes `01-red` et `02-green`.
