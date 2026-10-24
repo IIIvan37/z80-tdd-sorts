@@ -70,4 +70,11 @@ describe("insertion_sort", () => {
 
     expect(insertionSort(sorted).nops).toBeLessThanOrEqual(33 * n - 26);
   });
+
+  // A key never moves past a byte equal to it.
+  it.each([2, 16, 255])("sorts %i equal bytes in 33n − 26 NOPs at most", (n) => {
+    const equal = Array.from({ length: n }, () => 0x42);
+
+    expect(insertionSort(equal).nops).toBeLessThanOrEqual(33 * n - 26);
+  });
 });
