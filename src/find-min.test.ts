@@ -21,4 +21,13 @@ describe("find_min", () => {
 
     expect(run).toHaveRegisters({ a: 0x42 });
   });
+
+  it("returns the second byte when it is the smaller one", () => {
+    const run = program.run("find_min", {
+      registers: { hl: ARRAY, b: 2 },
+      memory: [{ at: ARRAY, bytes: [0x42, 0x17] }],
+    });
+
+    expect(run).toHaveRegisters({ a: 0x17 });
+  });
 });
