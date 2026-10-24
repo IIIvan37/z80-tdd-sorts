@@ -2,3 +2,4 @@
 ; Each algorithm adds its own source file here.
  org #4000
  include "find-min.asm"
+ include "selection-sort.asm"
