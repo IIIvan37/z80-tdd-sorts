@@ -1,6 +1,6 @@
 # z80-tdd-sorts
 
-Sorting algorithms in Z80 assembly for the Amstrad CPC, written test-first with [z80-tdd](https://github.com/IIIvan37/z80-tdd). Each algorithm is the subject of a blog post, in French and in English, that follows its tests one step at a time.
+Sorting algorithms in Z80 assembly for the Amstrad CPC, written test-first with [z80-tdd](https://github.com/IIIvan37/z80-tdd). Each algorithm is the subject of a blog post, in French and in English, that follows its tests one step at a time. The posts live on the blog, not in this repository: this repository holds their code.
 
 ## How the repository is organised
 
