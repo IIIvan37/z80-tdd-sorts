@@ -57,4 +57,13 @@ describe("counting_sort", () => {
 
     expect(countingSort(equal).nops).toBeLessThanOrEqual(20 * n + 2572);
   });
+
+  // The order changes nothing: sorted and reversed bytes both mean n counts of 1.
+  it.each([2, 16, 255])("sorts %i sorted or reversed bytes in 19n + 2573 NOPs at most", (n) => {
+    const sorted = Array.from({ length: n }, (_, i) => i);
+    const reversed = [...sorted].reverse();
+
+    expect(countingSort(sorted).nops).toBeLessThanOrEqual(19 * n + 2573);
+    expect(countingSort(reversed).nops).toBeLessThanOrEqual(19 * n + 2573);
+  });
 });
