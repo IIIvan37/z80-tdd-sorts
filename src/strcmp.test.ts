@@ -50,4 +50,9 @@ describe("strcmp", () => {
     expect(compare("A", "B")).toBe("<");
     expect(compare("B", "A")).toBe(">");
   });
+
+  it("orders two strings by their first different letter", () => {
+    expect(compare("AB", "AC")).toBe("<");
+    expect(compare("AC", "AB")).toBe(">");
+  });
 });
