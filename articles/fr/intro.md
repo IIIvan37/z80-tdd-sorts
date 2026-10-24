@@ -245,4 +245,4 @@ Onze étapes pour une Routine de neuf instructions, ça peut sembler beaucoup. M
 - [z80-tdd](https://github.com/IIIvan37/z80-tdd), l'outil de test, et sa [release 0.1.0](https://github.com/IIIvan37/z80-tdd/releases/tag/v0.1.0)
 - [z80-tdd-sorts](https://github.com/IIIvan37/z80-tdd-sorts), le dépôt de cet article (branche `intro`)
 - [RASM](https://github.com/EdouardBERGE/rasm), l'assembleur
-- *Perfectly accurate Z80 flags and CPC timing*, Madram / Overlanders (64NOPS), la table des durées en NOPs
+- [*Perfectly accurate Z80 flags and CPC timing*](https://64nops.wordpress.com/2021/01/13/perfectly-accurate-z80-flags-and-cpc-timing/), Madram / Overlanders (64NOPS), la table des durées en NOPs
