@@ -24,7 +24,7 @@
 
 ## Décisions
 
-- Une branche par article, un tag par étape, cycle rouge, vert, refactor, plus `guard` : [README.md](../../README.md).
+- Une branche par article, un tag par étape, cycle rouge, vert, refactor, plus `guard` : [README.md](../../../README.md).
 - Pas de CI ; dépôt privé au début ; articles en français et en anglais, dans le style de https://sikorama.fr/ ; code en anglais.
 - Le budget en NOPs est l'angle CPC de l'introduction : un test fixe la durée, et le code doit la respecter.
 
