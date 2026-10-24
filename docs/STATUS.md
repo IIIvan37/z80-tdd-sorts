@@ -9,13 +9,13 @@ Le dépôt porte un projet CPC vide sur `main`, testé avec z80-tdd 0.1.0 (tarba
 Chaque article a sa branche figée, avec un tag par étape TDD. La convention est dans le [README](../README.md).
 Les tags `intro/*` gardent l'ancien lockfile : le README donne `--no-lockfile`.
 Le tri par sélection est livré : branche `selection`, 10 étapes. Pire cas mesuré : octets égaux, 6n² + 35n − 36 NOPs.
-Le tri par insertion est écrit en local : branche `insertion`, 15 étapes, décalage par `LDD` en `11-refactor`.
-Budgets : trié et égaux 33n − 26, inversé 6n² + 22n − 21 NOPs. Revue faite, la branche n'est pas encore poussée.
+Le tri par insertion est livré : branche `insertion`, 15 étapes, décalage par `LDD` en `11-refactor`.
+Budgets : trié et égaux 33n − 26, inversé 6n² + 22n − 21 NOPs. La branche et ses 15 tags sont poussés et figés.
 Les articles, en français et en anglais, vivent dans le dépôt `IIIvan37/blog` : ce dépôt-ci ne garde que le code.
 
 ## Prochaine action
 
-Trancher les deux commentaires relevés par la revue de `insertion` (test `09`, `ld c,0`), puis pousser la branche et ses tags.
+Mesurer `selection_sort` sur les entrées triée et inversée (worktree sur `selection/10-guard`), pour la comparaison de l'article insertion.
 
 ## Questions ouvertes
 
@@ -26,7 +26,7 @@ Trancher les deux commentaires relevés par la revue de `insertion` (test `09`, 
 
 - **intro** : branche `intro`, dernier tag `intro/11-green` · FR et EN dans `blog`, `tdd-cpc-find-min` · en ligne.
 - **selection** : branche `selection`, dernier tag `selection/10-guard` · FR et EN dans `blog`, `tdd-cpc-selection-sort`.
-- **insertion** : branche `insertion` locale, dernier tag `insertion/15-guard` · pas encore d'article. Le tri à bulles vient après.
+- **insertion** : branche `insertion`, dernier tag `insertion/15-guard` · pas encore d'article. Le tri à bulles vient après.
 
 ## Historique
 
