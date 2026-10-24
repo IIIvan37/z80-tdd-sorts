@@ -30,4 +30,13 @@ describe("find_min", () => {
 
     expect(run).toHaveRegisters({ a: 0x17 });
   });
+
+  it("returns the smallest byte wherever it is", () => {
+    const run = program.run("find_min", {
+      registers: { hl: ARRAY, b: 5 },
+      memory: [{ at: ARRAY, bytes: [0x42, 0x30, 0x05, 0x17, 0x99] }],
+    });
+
+    expect(run).toHaveRegisters({ a: 0x05 });
+  });
 });
