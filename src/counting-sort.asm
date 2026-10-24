@@ -12,7 +12,8 @@ counting_sort:
  inc e
  djnz .count
  pop de         ; DE: back to the first byte
-.scan:          ; L runs over the counts, up to #FF
+ ld l,b         ; L: #00, as DJNZ leaves B at zero
+.scan:          ; L runs over the 256 counts
  ld a,(hl)
  or a
  jr z,.next
