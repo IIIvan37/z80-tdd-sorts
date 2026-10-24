@@ -63,4 +63,11 @@ describe("insertion_sort", () => {
     expect(run).toChangeOnly({ address: ARRAY, length: 5 });
     expect(run.memory(ARRAY, 5)).toEqual([0x05, 0x17, 0x30, 0x42, 0x99]);
   });
+
+  // Sorted bytes are the fastest input: each key stops at the byte before it.
+  it.each([2, 16, 255])("sorts %i sorted bytes in 33n − 26 NOPs at most", (n) => {
+    const sorted = Array.from({ length: n }, (_, i) => i);
+
+    expect(insertionSort(sorted).nops).toBeLessThanOrEqual(33 * n - 26);
+  });
 });
