@@ -61,4 +61,10 @@ describe("strcmp", () => {
     expect(compare("A", "AB")).toBe("<");
     expect(compare("AB", "A")).toBe(">");
   });
+
+  // "A" is #C1 and "BC" is #42 #C3: bit 7 of #C1 must not make "A" larger than "B".
+  it("compares the last letter of a string without its end mark", () => {
+    expect(compare("A", "BC")).toBe("<");
+    expect(compare("BC", "A")).toBe(">");
+  });
 });
