@@ -34,4 +34,10 @@ describe("bubble_sort", () => {
       0x05, 0x17, 0x30, 0x42,
     ]);
   });
+
+  it("sorts five bytes in any order", () => {
+    expect(bubbleSort([0x42, 0x30, 0x05, 0x17, 0x99]).memory(ARRAY, 5)).toEqual([
+      0x05, 0x17, 0x30, 0x42, 0x99,
+    ]);
+  });
 });
