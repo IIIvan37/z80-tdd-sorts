@@ -24,10 +24,13 @@ Les articles d'`intro`, des trois tris simples, du comptage et du radix, en fran
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
 Les articles du blog portent des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag, livrés par la PR blog #11.
 Les tags sont dans la ligne de la date. Le schéma du blog exige au moins un tag par article.
+La série continue sur des références vers des données fixes : `strcmp`, puis un tri de pointeurs vers des chaînes.
+`strcmp` est écrite en local : branche `strcmp`, 14 étapes taguées, non poussée. Chaînes à bit 7 final, sortie comme `CP`.
+Budget : 14k + 22 NOPs, k = lettres égales sur 7 bits avant la lettre qui décide. Revue code-review faite, `simplify` partiel.
 
 ## Prochaine action
 
-Choisir le prochain article de la série.
+Relancer les angles simplification et efficacité de `simplify` sur `main...strcmp`, puis montrer les constats à Ivan.
 
 ## Questions ouvertes
 
@@ -42,6 +45,7 @@ Choisir le prochain article de la série.
 - **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 - **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
+- **strcmp** : branche `strcmp` (locale), dernier tag `strcmp/14-guard` · article non écrit.
 
 ## Historique
 
@@ -57,8 +61,8 @@ Choisir le prochain article de la série.
 - 2026-10-24 · **texte-counting** : article FR et EN du comptage avec graphique SVG, mutants relancés, sans mention de Roudoudou.
 - 2026-10-24 · **texte-counting-push** : revue code-review, trois corrections, article du comptage publié (PR blog #10).
 - 2026-10-24 · **tags** : grilling des tags Q1 à Q6, `feat/tags` dans `blog`, code-review et simplify, PR blog #11, radix en pause.
-- 2026-10-24 · **radix-grilling** : tour 1 du radix confirmé, tours 2 à 4 acceptés (contrat, tables, tests, budgets, article).
-- 2026-10-24 · **radix-start** : design du radix confirmé, branche `radix` ouverte, étapes `01-red` et `02-green`.
+- 2026-10-24 · **radix-grilling, radix-start** : design du radix accepté en 4 tours, branche `radix` ouverte, étapes `01` et `02`.
 - 2026-10-24 · **radix-steps** : étapes `03-red` à `10-guard`, refactor par clés inversées, guards prouvés par mutants, `radix` poussée (PR #15).
 - 2026-10-24 · **texte-radix** : article FR et EN du radix (PR blog #12), mutants relancés, coûts vérifiés, revue code-review.
 - 2026-10-24 · **tags-merge** : Q3(1) tranchée (tags dans la ligne de la date), merge testé par un build, PR blog #11 fusionnée.
+- 2026-10-24 · **strcmp** : série des chaînes choisie, `strcmp` en 14 étapes locales, code-review et 3 corrections, `simplify` partiel.
