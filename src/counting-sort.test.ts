@@ -24,4 +24,8 @@ describe("counting_sort", () => {
   it("leaves a one-byte array as it is", () => {
     expect(countingSort([0x42])).toLeaveMemoryUnchanged();
   });
+
+  it("swaps two bytes in the wrong order", () => {
+    expect(countingSort([0x42, 0x17]).memory(ARRAY, 2)).toEqual([0x17, 0x42]);
+  });
 });
