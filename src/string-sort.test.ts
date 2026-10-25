@@ -20,27 +20,41 @@ describe("string_sort", () => {
     program = await loadProgram();
   });
 
-  // Runs string_sort on pointers to `texts`. The strings follow one another
-  // from STRINGS, and the array holds a little-endian pointer to each one.
-  function runStringSort(texts: string[]) {
-    const strings = texts.map(bytesOf);
-    const pointers: number[] = [];
+  // Where each of `texts` starts: the strings follow one another from STRINGS.
+  function startsOf(texts: string[]) {
     let at = STRINGS;
-    for (const bytes of strings) {
-      pointers.push(at & 0xff, at >> 8);
-      at += bytes.length;
-    }
+    return texts.map((text) => {
+      const start = at;
+      at += text.length;
+      return start;
+    });
+  }
 
+  // Runs string_sort on pointers to `texts`. The array holds a little-endian
+  // pointer to each string.
+  function runStringSort(texts: string[]) {
     return program.run("string_sort", {
       registers: { hl: ARRAY, b: texts.length },
       memory: [
-        { at: ARRAY, bytes: pointers },
-        { at: STRINGS, bytes: strings.flat() },
+        { at: ARRAY, bytes: startsOf(texts).flatMap((at) => [at & 0xff, at >> 8]) },
+        { at: STRINGS, bytes: texts.flatMap(bytesOf) },
       ],
     });
   }
 
+  // Runs string_sort on pointers to `texts`, and returns the texts in the order
+  // of the pointers the array holds after the run.
+  function sortStrings(texts: string[]) {
+    const starts = startsOf(texts);
+    const bytes = runStringSort(texts).memory(ARRAY, 2 * texts.length);
+    return texts.map((_, i) => texts[starts.indexOf(bytes[2 * i] | (bytes[2 * i + 1] << 8))]);
+  }
+
   it("leaves a one-pointer array as it is", () => {
     expect(runStringSort(["MODE"])).toLeaveMemoryUnchanged();
+  });
+
+  it("swaps two pointers in the wrong order", () => {
+    expect(sortStrings(["MOVE", "MODE"])).toEqual(["MODE", "MOVE"]);
   });
 });
