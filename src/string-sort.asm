@@ -1,10 +1,14 @@
 string_sort:
  dec b          ; one pass for each pointer but the first
  ret z
+ ld c,0
 .next:
+ inc c          ; C: the pointers of the sorted run
  inc hl
  inc hl         ; HL: the next pointer to insert
+ push bc
  push hl        ; the next pass starts from there
+ ld b,c         ; B: the pointers the key can still move past
  ld e,(hl)
  inc hl
  ld d,(hl)      ; DE: the key, the string to insert
@@ -25,7 +29,7 @@ string_sort:
  dec hl         ; move the pointer before the hole into the hole
  ld a,(hl)
  dec hl
- ld c,(hl)
+ ld c,(hl)      ; C is free: the count is on the stack
  inc hl
  inc hl
  ld (hl),c
@@ -34,11 +38,12 @@ string_sort:
  dec hl
  dec hl
  dec hl         ; HL: the new hole
- jr .shift
+ djnz .shift    ; at 0, the hole is the first pointer: the key goes first
 .place:
  ld (hl),e
  inc hl
  ld (hl),d
  pop hl
+ pop bc
  djnz .next
  ret
