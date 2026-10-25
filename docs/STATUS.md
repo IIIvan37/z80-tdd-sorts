@@ -34,11 +34,11 @@ Code : clé et trou sur la pile pendant `call strcmp`, C compte la suite triée,
 Le tour 4 a gardé ce code après la mesure de 8 variantes : le tableau est dans le rapport `strsort-measure`.
 Budgets exacts : triée (n − 1)(90 + 14k) + 7, inversée (n − 1)(n(79 + 14k)/2 + 37) + 7, égales (n − 1)(74 + 14L) + 7 NOPs.
 Revue code-review faite, ses sept remarques corrigées : commentaires dans les étapes (tags `06` à `17` reconstruits), `simplify` en `18-refactor`.
-L'article FR et EN `tdd-cpc-string-sort` est écrit dans `blog` (branche `docs/string-sort-post`, build vert). Sa revue n'est pas lue.
+L'article FR et EN `tdd-cpc-string-sort` est écrit dans `blog` (branche `docs/string-sort-post`, build vert). Sa revue est faite, pas corrigée.
 
 ## Prochaine action
 
-Relancer la revue Spec de `tdd-cpc-string-sort` (`blog`, depuis `origin/main`), puis corriger avec les remarques Standards du dernier rapport.
+Corriger l'article `tdd-cpc-string-sort` dans `blog` avec les remarques des deux revues du dernier rapport, puis push et PR blog.
 
 ## Questions ouvertes
 

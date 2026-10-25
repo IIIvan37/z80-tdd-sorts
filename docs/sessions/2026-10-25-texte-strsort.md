@@ -30,7 +30,11 @@
   4. « à k = 0 » apparaît dans « Huit façons » (l.412, 425 à 427) avant la définition de k (l.469).
   5. Longueur : environ 2 850 mots de prose contre 1 900 à 2 070. Coupes possibles : le paragraphe du `17-guard` qui double `strcmp` (l.555),
      les deux variantes écartées par principe dans le tableau, le paragraphe « passe de trop » du `13-guard` (l.390).
-  La revue Spec tournait encore au moment de ce commit.
+  Spec reçue ensuite : aucun manque, aucun ajout hors spec, tous les faits vérifiés (blocs de code, sorties, coûts, comptes de tests).
+  L'agent a refait le test du tableau à #80FC seul : 5 mutants passent (lignes 5, 9, 29, 32, 40 de `string-sort.asm` à `10-guard`).
+  Deux remarques de forme :
+  1. l.390 : « fait déjà tomber les neuf tests du tri » → « les huit autres tests du tri » (8 échecs à `12-green`, 9 avec le nouveau guard).
+  2. l.24 : `string-sort.test.ts` copie `bytesOf`, il ne l'importe pas : « reprennent » → « recopient » (EN « reuse » → « copy »).
 
 ## Non fait / reste
 
@@ -54,11 +58,10 @@
 
 ## État pour reprendre
 
-- **Prochaine action :** relancer la seule revue Spec de l'article `tdd-cpc-string-sort` (`blog`, depuis `origin/main`), puis corriger avec les remarques Standards ci-dessus.
+- **Prochaine action :** corriger l'article `tdd-cpc-string-sort` avec les remarques des deux revues ci-dessus, puis `pnpm build`, push et PR blog.
 - **Arbre :** `blog` sur `docs/string-sort-post`, propre, non poussée · `z80-tdd-sorts` sur `strsort`, figée · PR #17 à #23 ouvertes, empilées ;
   ce rapport s'empile sur #23.
 - **Pièges :**
-  - L'agent de la revue Spec tournait au moment du rapport. Après `/clear`, son résultat est perdu : le relancer.
   - Deux worktrees jetables dans le scratchpad de cette session (`wt` détaché, `wt-docs` pour ce rapport). Le worktree `strsort-measure`
     d'une session passée existe encore. `git worktree prune` après leur suppression.
   - `rasm -v` affiche v3.0.8 sur ce Mac, le README demande v3.3.1. Les tests passent. Écart non traité.
