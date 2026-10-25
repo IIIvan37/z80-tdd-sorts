@@ -23,8 +23,7 @@ Les branches `intro`, `selection`, `insertion`, `bubble`, `counting`, `radix`, `
 Les articles d'`intro`, des trois tris simples, du comptage et du radix, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article FR et EN de `strcmp` (`tdd-cpc-strcmp`) est en ligne, livré par la PR blog #13.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
-Les articles du blog portent des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag, livrés par la PR blog #11.
-Les tags sont dans la ligne de la date. Le schéma du blog exige au moins un tag par article.
+Les articles portent des tags (`z80`, `cpc`, `tdd`, `sorting`) dans la ligne de la date, une page par tag, au moins un par article (PR blog #11).
 La série continue sur des références vers des données fixes : `strcmp`, puis un tri de pointeurs vers des chaînes.
 `strcmp` est livrée : branche `strcmp`, 15 étapes, chaînes à bit 7 final, sortie comme `CP`. Revue code-review et `simplify` faites.
 `14-refactor` garde l'octet de S1 dans E. k = lettres égales sur 7 bits avant la lettre qui décide.
@@ -35,10 +34,11 @@ Code : clé et trou sur la pile pendant `call strcmp`, C compte la suite triée,
 Le tour 4 a gardé ce code après la mesure de 8 variantes : le tableau est dans le rapport `strsort-measure`.
 Budgets exacts : triée (n − 1)(90 + 14k) + 7, inversée (n − 1)(n(79 + 14k)/2 + 37) + 7, égales (n − 1)(74 + 14L) + 7 NOPs.
 Revue code-review faite, ses sept remarques corrigées : commentaires dans les étapes (tags `06` à `17` reconstruits), `simplify` en `18-refactor`.
+L'article FR et EN `tdd-cpc-string-sort` est écrit dans `blog` (branche `docs/string-sort-post`, build vert). Sa revue n'est pas lue.
 
 ## Prochaine action
 
-Écrire l'article FR et EN `tdd-cpc-string-sort` dans `blog`, sur le code de `strsort/18-refactor`.
+Relancer `mattpocock-skills:code-review` sur `blog` (`docs/string-sort-post` depuis `origin/main`), puis corriger l'article `tdd-cpc-string-sort`.
 
 ## Questions ouvertes
 
@@ -54,7 +54,7 @@ Revue code-review faite, ses sept remarques corrigées : commentaires dans les �
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 - **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
 - **strcmp** : branche `strcmp`, dernier tag `strcmp/15-guard` · FR et EN dans `blog`, `tdd-cpc-strcmp` (PR blog #13) · en ligne.
-- **strsort** : branche `strsort`, dernier tag `strsort/18-refactor` · article pas écrit, slug prévu `tdd-cpc-string-sort`.
+- **strsort** : branche `strsort`, dernier tag `strsort/18-refactor` · FR et EN dans `blog`, `tdd-cpc-string-sort` · écrit, en revue, pas en ligne.
 
 ## Historique
 
@@ -67,5 +67,5 @@ Revue code-review faite, ses sept remarques corrigées : commentaires dans les �
 - 2026-10-24 · **radix-grilling, -start, -steps, texte-radix** : design en 4 tours, 10 étapes, guards par mutants (PR #15), article (PR blog #12).
 - 2026-10-24 · **tags, tags-merge** : grilling des tags Q1 à Q6, code-review et simplify, tags dans la ligne de la date, PR blog #11 fusionnée.
 - 2026-10-24 · **strcmp, -push, texte-strcmp** : 15 étapes, version E en `14-refactor`, bornes exactes, revues, article (PR blog #13).
-- 2026-10-25 · **strsort-grilling, -steps, -measure** : design en 4 tours, 8 variantes mesurées, `01-red` à `17-guard`, guards par mutants, code-review.
-- 2026-10-25 · **strsort-tags-push** : remarques de la revue corrigées, tags `06` à `17` reconstruits, `18-refactor`, `strsort` poussée.
+- 2026-10-25 · **strsort-grilling, -steps, -measure, -tags-push** : design en 4 tours, 8 variantes mesurées, 18 étapes, revue, `strsort` poussée.
+- 2026-10-25 · **texte-strsort** : article FR et EN du tri de pointeurs, sorties et mutants relancés, coûts vérifiés, revue lancée.
