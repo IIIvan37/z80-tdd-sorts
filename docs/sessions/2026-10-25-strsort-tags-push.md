@@ -48,6 +48,11 @@
 
 - **Prochaine action :** écrire l'article FR et EN `tdd-cpc-string-sort` dans `blog`, sur le code de `strsort/18-refactor`.
 - **Arbre :** `strsort` propre, poussée, figée · PR #17 à #22 ouvertes, empilées ; ce rapport s'empile sur #22.
+- **Questions posées à Ivan, sans réponse :**
+  1. Supprimer la branche locale `strsort-backup-17` (ancienne version, à `f1aa0ea`) ?
+  2. Corriger la section « Reprendre » du skill `session-report` : choisir le dernier rapport ajouté dans git
+     (`git log -1 --diff-filter=A --format= --name-only -- <rapports>`), pas le dernier dans l'ordre des noms ?
+     La règle du slug est déjà dans `~/.claude/CLAUDE.md` et dans `~/vault/wiki/claude-code-outillage.md`.
 - **Pièges :**
   - L'ordre des noms des rapports ne suit pas l'ordre des sessions d'un même jour : `strsort-measure` vient avant `strsort-steps`.
     Le slug de ce rapport est choisi pour venir en dernier.
