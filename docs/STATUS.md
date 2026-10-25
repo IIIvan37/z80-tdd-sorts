@@ -22,13 +22,12 @@ Budget : 122n + 13 406 NOPs pour toute entrée, car aucun branchement ne dépend
 Les branches `intro`, `selection`, `insertion`, `bubble`, `counting` et `radix` sont poussées avec leurs tags, et figées.
 Les articles d'`intro`, des trois tris simples, du comptage et du radix, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
-Le blog reçoit des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag : PR blog #11, ouverte, pas fusionnée.
-La question Q3(1) de cette PR reste sans réponse : tags sur la ligne de la date, ou sur une ligne à part.
-L'article du radix porte déjà `tags` : le schéma de `main` ignore ce champ, celui de la PR #11 l'exige.
+Les articles du blog portent des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag, livrés par la PR blog #11.
+Les tags sont dans la ligne de la date. Le schéma du blog exige au moins un tag par article.
 
 ## Prochaine action
 
-Trancher la question Q3(1) de la PR blog #11 (tags), puis fusionner cette PR.
+Choisir le prochain article de la série.
 
 ## Questions ouvertes
 
@@ -62,3 +61,4 @@ Trancher la question Q3(1) de la PR blog #11 (tags), puis fusionner cette PR.
 - 2026-10-24 · **radix-start** : design du radix confirmé, branche `radix` ouverte, étapes `01-red` et `02-green`.
 - 2026-10-24 · **radix-steps** : étapes `03-red` à `10-guard`, refactor par clés inversées, guards prouvés par mutants, `radix` poussée (PR #15).
 - 2026-10-24 · **texte-radix** : article FR et EN du radix (PR blog #12), mutants relancés, coûts vérifiés, revue code-review.
+- 2026-10-24 · **tags-merge** : Q3(1) tranchée (tags dans la ligne de la date), merge testé par un build, PR blog #11 fusionnée.
