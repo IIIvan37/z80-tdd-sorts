@@ -30,14 +30,15 @@ La série continue sur des références vers des données fixes : `strcmp`, puis
 `14-refactor` garde l'octet de S1 dans E. k = lettres égales sur 7 bits avant la lettre qui décide.
 Budgets exacts : lettres différentes 14k + 20, une chaîne finit 14k + 8, chaînes égales 14k + 4 NOPs.
 Le tri par insertion de pointeurs vers des chaînes a son design (grilling Q1 à Q10, note du coffre `z80-tdd-sorts-tris`).
-Sa branche `strsort` est locale, issue de `strcmp/15-guard`, et va de `01-red` à `13-guard` : boucle, stabilité, page, bornes.
-Version actuelle : clé et trou sur la pile pendant `call strcmp`, C compte la suite triée, B borne les décalages par `djnz`.
-Chaque `inc hl` du tri et de `strcmp` a son mutant `inc l` attrapé (tableaux à #80FC et #80FD, chaîne à #90FE).
-Le tour 4 du grilling (plan de registres, contrat de sortie, forme du budget) attend la mesure des variantes de la Q9.
+Sa branche `strsort` est locale, issue de `strcmp/15-guard`, et va de `01-red` à `17-guard` : boucle, stabilité, page, bornes, budgets.
+Code : clé et trou sur la pile pendant `call strcmp`, C compte la suite triée, B borne les décalages par `djnz`. IX et IY ne changent pas.
+Le tour 4 a gardé ce code après la mesure de 8 variantes : le tableau est dans le rapport `strsort-measure`.
+Budgets exacts : triée (n − 1)(90 + 14k) + 7, inversée n(n − 1)/2 · (79 + 14k) + 37(n − 1) + 7, égales (n − 1)(74 + 14L) + 7 NOPs.
+La revue code-review est faite : Spec sans défaut, Standards sans violation dure, sept remarques sur des commentaires et les tests.
 
 ## Prochaine action
 
-Lancer la mesure des plans de registres du tour 4 (plan dans le dernier rapport), après le feu vert d'Ivan.
+Corriger les remarques de la revue de `strsort` selon la réponse d'Ivan (question dans le dernier rapport).
 
 ## Questions ouvertes
 
@@ -53,7 +54,7 @@ Lancer la mesure des plans de registres du tour 4 (plan dans le dernier rapport)
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 - **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
 - **strcmp** : branche `strcmp`, dernier tag `strcmp/15-guard` · FR et EN dans `blog`, `tdd-cpc-strcmp` (PR blog #13) · en ligne.
-- **strsort** : branche `strsort` (locale), dernier tag `strsort/13-guard` · article pas écrit, slug prévu `tdd-cpc-string-sort`.
+- **strsort** : branche `strsort` (locale), dernier tag `strsort/17-guard` · article pas écrit, slug prévu `tdd-cpc-string-sort`.
 
 ## Historique
 
@@ -63,9 +64,8 @@ Lancer la mesure des plans de registres du tour 4 (plan dans le dernier rapport)
 - 2026-10-24 · **insertion, -push, texte-insertion** : grilling Q1 à Q13, 15 étapes, guards prouvés par mutants, article (PR blog #8).
 - 2026-10-24 · **bubble, texte-bubble** : grilling Q1 à Q9, dix variantes mesurées, 13 étapes, guards par mutants, article (PR blog #9).
 - 2026-10-24 · **counting, texte-counting, -push** : PR #9 à #12, grilling Q1 à Q13, 13 étapes, guards par mutants, article avec SVG (PR blog #10).
-- 2026-10-24 · **radix-grilling, -start, -steps** : design en 4 tours, 10 étapes, refactor par clés inversées, guards par mutants (PR #15).
-- 2026-10-24 · **texte-radix** : article FR et EN du radix (PR blog #12), mutants relancés, coûts vérifiés, revue code-review.
+- 2026-10-24 · **radix-grilling, -start, -steps, texte-radix** : design en 4 tours, 10 étapes, guards par mutants (PR #15), article (PR blog #12).
 - 2026-10-24 · **tags, tags-merge** : grilling des tags Q1 à Q6, code-review et simplify, tags dans la ligne de la date, PR blog #11 fusionnée.
 - 2026-10-24 · **strcmp, -push, texte-strcmp** : 15 étapes, version E en `14-refactor`, bornes exactes, revues, article (PR blog #13).
-- 2026-10-25 · **strsort-grilling** : design du tri de pointeurs en 3 tours (Q1 à Q10), branche `strsort` ouverte, `01-red`.
-- 2026-10-25 · **strsort-steps** : étapes `02-green` à `13-guard`, guards prouvés par mutants, `ld e,iyl` vérifié pour la mesure.
+- 2026-10-25 · **strsort-grilling, -steps** : design en 3 tours (Q1 à Q10), étapes `01-red` à `13-guard`, guards prouvés par mutants.
+- 2026-10-25 · **strsort-measure** : 8 variantes mesurées, tour 4 (Q1 à Q7), guards `14` à `17` (IX/IY, budgets), code-review.
