@@ -20,9 +20,9 @@ describe("string_sort", () => {
     program = await loadProgram();
   });
 
-  // Where each of `texts` starts: the strings follow one another from STRINGS.
-  function startsOf(texts: string[]) {
-    let at = STRINGS;
+  // Where each of `texts` starts: the strings follow one another from `strings`.
+  function startsOf(texts: string[], strings: number) {
+    let at = strings;
     return texts.map((text) => {
       const start = at;
       at += text.length;
@@ -30,23 +30,23 @@ describe("string_sort", () => {
     });
   }
 
-  // Runs string_sort on pointers to `texts`. The array holds a little-endian
-  // pointer to each string.
-  function runStringSort(texts: string[]) {
+  // Runs string_sort on pointers to `texts`. The array at `array` holds a
+  // little-endian pointer to each string.
+  function runStringSort(texts: string[], array = ARRAY, strings = STRINGS) {
     return program.run("string_sort", {
-      registers: { hl: ARRAY, b: texts.length },
+      registers: { hl: array, b: texts.length },
       memory: [
-        { at: ARRAY, bytes: startsOf(texts).flatMap((at) => [at & 0xff, at >> 8]) },
-        { at: STRINGS, bytes: texts.flatMap(bytesOf) },
+        { at: array, bytes: startsOf(texts, strings).flatMap((at) => [at & 0xff, at >> 8]) },
+        { at: strings, bytes: texts.flatMap(bytesOf) },
       ],
     });
   }
 
   // Runs string_sort on pointers to `texts`, and returns the texts in the order
   // of the pointers the array holds after the run.
-  function sortStrings(texts: string[]) {
-    const starts = startsOf(texts);
-    const bytes = runStringSort(texts).memory(ARRAY, 2 * texts.length);
+  function sortStrings(texts: string[], array = ARRAY, strings = STRINGS) {
+    const starts = startsOf(texts, strings);
+    const bytes = runStringSort(texts, array, strings).memory(array, 2 * texts.length);
     return texts.map((_, i) => texts[starts.indexOf(bytes[2 * i] | (bytes[2 * i + 1] << 8))]);
   }
 
@@ -80,5 +80,20 @@ describe("string_sort", () => {
   // The two strings are equal: only their addresses, #9000 then #9004, tell them apart.
   it("keeps two pointers to equal strings in their order", () => {
     expect(runStringSort(["MODE", "MODE"]).memory(ARRAY, 4)).toEqual([0x00, 0x90, 0x04, 0x90]);
+  });
+
+  // The array runs into the next page: from #80FC, the page ends between two
+  // pointers, and from #80FD, inside one. MOVER also runs into the next page,
+  // from #90FE. MOVER is the key against MODE, then MOVE is the key against
+  // MOVER: each comparison reads past the end of the page, in one string and
+  // then the other.
+  it.each(["80FC", "80FD"])("sorts pointers and strings that cross a page, from #%s", (array) => {
+    expect(sortStrings(["MODE", "MOVER", "MOVE", "MEMORY", "MERGE"], parseInt(array, 16), 0x90fa)).toEqual([
+      "MEMORY",
+      "MERGE",
+      "MODE",
+      "MOVE",
+      "MOVER",
+    ]);
   });
 });
