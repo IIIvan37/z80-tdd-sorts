@@ -76,4 +76,9 @@ describe("string_sort", () => {
       "MOVER",
     ]);
   });
+
+  // The two strings are equal: only their addresses, #9000 then #9004, tell them apart.
+  it("keeps two pointers to equal strings in their order", () => {
+    expect(runStringSort(["MODE", "MODE"]).memory(ARRAY, 4)).toEqual([0x00, 0x90, 0x04, 0x90]);
+  });
 });
