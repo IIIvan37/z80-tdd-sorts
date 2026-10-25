@@ -1,11 +1,10 @@
 string_sort:
- dec b
+ dec b          ; one pass for each pointer but the first
  ret z
- ld e,b
- ld d,0
- ex de,hl
- add hl,hl
- add hl,de      ; HL: the last pointer
+.next:
+ inc hl
+ inc hl         ; HL: the next pointer to insert
+ push hl        ; the next pass starts from there
  ld e,(hl)
  inc hl
  ld d,(hl)      ; DE: the key, the string to insert
@@ -40,4 +39,6 @@ string_sort:
  ld (hl),e
  inc hl
  ld (hl),d
+ pop hl
+ djnz .next
  ret
