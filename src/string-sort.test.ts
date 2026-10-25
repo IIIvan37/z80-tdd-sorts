@@ -57,4 +57,13 @@ describe("string_sort", () => {
   it("swaps two pointers in the wrong order", () => {
     expect(sortStrings(["MOVE", "MODE"])).toEqual(["MODE", "MOVE"]);
   });
+
+  it("moves the last pointer to the front of a sorted run", () => {
+    expect(sortStrings(["MERGE", "MODE", "MOVE", "MEMORY"])).toEqual([
+      "MEMORY",
+      "MERGE",
+      "MODE",
+      "MOVE",
+    ]);
+  });
 });
