@@ -8,6 +8,10 @@ expect.extend(runMatchers);
 const ARRAY = 0x8000;
 const STRINGS = 0x9000;
 
+// Five strings in no order, and the order string_sort puts them in.
+const UNSORTED = ["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"];
+const SORTED = ["MEMORY", "MERGE", "MODE", "MOVE", "MOVER"];
+
 // The bytes of `text`: one per letter, bit 7 set on the last one, as the CPC firmware writes them.
 function bytesOf(text: string) {
   return Array.from(text, (letter, i) => letter.charCodeAt(0) | (i === text.length - 1 ? 0x80 : 0));
@@ -20,6 +24,10 @@ describe("string_sort", () => {
     program = await loadProgram();
   });
 
+  // Where the Run writes the pointers and the strings, ARRAY and STRINGS unless a
+  // test moves them, and the registers and the NOP limit it starts with.
+  type Setup = { array?: number; strings?: number } & Pick<RunOptions, "registers" | "nopLimit">;
+
   // Where each of `texts` starts: the strings follow one another from `strings`.
   function startsOf(texts: string[], strings: number) {
     let at = strings;
@@ -31,17 +39,12 @@ describe("string_sort", () => {
   }
 
   // Runs string_sort on pointers to `texts`. The array at `array` holds a
-  // little-endian pointer to each string. `options` sets the other registers
-  // and the NOP limit.
-  function runStringSort(
-    texts: string[],
-    array = ARRAY,
-    strings = STRINGS,
-    options: Pick<RunOptions, "registers" | "nopLimit"> = {},
-  ) {
+  // little-endian pointer to each string. HL points to the array and B counts its
+  // pointers, unless `registers` sets them.
+  function runStringSort(texts: string[], { array = ARRAY, strings = STRINGS, ...options }: Setup = {}) {
     return program.run("string_sort", {
       ...options,
-      registers: { ...options.registers, hl: array, b: texts.length },
+      registers: { hl: array, b: texts.length, ...options.registers },
       memory: [
         { at: array, bytes: startsOf(texts, strings).flatMap((at) => [at & 0xff, at >> 8]) },
         { at: strings, bytes: texts.flatMap(bytesOf) },
@@ -51,7 +54,7 @@ describe("string_sort", () => {
 
   // The texts that the little-endian pointers in `bytes` point to, in their
   // order. Each of `texts` starts where startsOf puts it.
-  function textsOf(bytes: readonly number[], texts: string[], strings: number) {
+  function textsOf(bytes: readonly number[], texts: string[], strings = STRINGS) {
     const starts = startsOf(texts, strings);
     return Array.from(
       { length: bytes.length / 2 },
@@ -61,9 +64,15 @@ describe("string_sort", () => {
 
   // Runs string_sort on pointers to `texts`, and returns the texts in the order
   // of the pointers the array holds after the run.
-  function sortStrings(texts: string[], array = ARRAY, strings = STRINGS) {
-    const bytes = runStringSort(texts, array, strings).memory(array, 2 * texts.length);
-    return textsOf(bytes, texts, strings);
+  function sortStrings(texts: string[], setup: Setup = {}) {
+    const { array = ARRAY, strings = STRINGS } = setup;
+    return textsOf(runStringSort(texts, setup).memory(array, 2 * texts.length), texts, strings);
+  }
+
+  // n strings with the same k letters, then a last letter that tells them
+  // apart, in order: each comparison finds k equal letters, then two different ones.
+  function withPrefix(n: number, k: number) {
+    return Array.from({ length: n }, (_, i) => "A".repeat(k) + String.fromCharCode(i));
   }
 
   it("leaves a one-pointer array as it is", () => {
@@ -84,13 +93,7 @@ describe("string_sort", () => {
   });
 
   it("sorts five pointers in any order", () => {
-    expect(sortStrings(["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"])).toEqual([
-      "MEMORY",
-      "MERGE",
-      "MODE",
-      "MOVE",
-      "MOVER",
-    ]);
+    expect(sortStrings(UNSORTED)).toEqual(SORTED);
   });
 
   // The two strings are equal: only their addresses, #9000 then #9004, tell them apart.
@@ -104,13 +107,9 @@ describe("string_sort", () => {
   // MOVER: each comparison reads past the end of the page, in one string and
   // then the other.
   it.each(["80FC", "80FD"])("sorts pointers and strings that cross a page, from #%s", (array) => {
-    expect(sortStrings(["MODE", "MOVER", "MOVE", "MEMORY", "MERGE"], parseInt(array, 16), 0x90fa)).toEqual([
-      "MEMORY",
-      "MERGE",
-      "MODE",
-      "MOVE",
-      "MOVER",
-    ]);
+    const texts = ["MODE", "MOVER", "MOVE", "MEMORY", "MERGE"];
+
+    expect(sortStrings(texts, { array: parseInt(array, 16), strings: 0x90fa })).toEqual(SORTED);
   });
 
   it("ignores a pointer to a larger string right before the array", () => {
@@ -118,23 +117,11 @@ describe("string_sort", () => {
     // after every string of the array: a shift past the first pointer would move
     // it. Fresh memory would hold #0000 there, a pointer to #00, which comes before
     // every string: no key would move past it.
-    const texts = ["ZONE", "MOVE", "MERGE", "MOVER", "MEMORY", "MODE"];
-    const run = program.run("string_sort", {
-      registers: { hl: ARRAY + 2, b: 5 },
-      memory: [
-        { at: ARRAY, bytes: startsOf(texts, STRINGS).flatMap((at) => [at & 0xff, at >> 8]) },
-        { at: STRINGS, bytes: texts.flatMap(bytesOf) },
-      ],
-    });
+    const texts = ["ZONE", ...UNSORTED];
+    const run = runStringSort(texts, { registers: { hl: ARRAY + 2, b: 5 } });
 
     expect(run).toChangeOnly({ address: ARRAY + 2, length: 10 });
-    expect(textsOf(run.memory(ARRAY + 2, 10), texts, STRINGS)).toEqual([
-      "MEMORY",
-      "MERGE",
-      "MODE",
-      "MOVE",
-      "MOVER",
-    ]);
+    expect(textsOf(run.memory(ARRAY + 2, 10), texts)).toEqual(SORTED);
   });
 
   it("ignores a pointer to a smaller string right after the array", () => {
@@ -143,38 +130,19 @@ describe("string_sort", () => {
     // its second pointer lies across the end of the page: an inc l in place of an
     // inc hl would read its high byte at #8000, not at #8100.
     const array = 0x80fd;
-    const texts = ["MOVE", "MERGE", "MOVER", "MEMORY", "MODE", "AUTO"];
-    const run = program.run("string_sort", {
-      registers: { hl: array, b: 5 },
-      memory: [
-        { at: array, bytes: startsOf(texts, STRINGS).flatMap((at) => [at & 0xff, at >> 8]) },
-        { at: STRINGS, bytes: texts.flatMap(bytesOf) },
-      ],
-    });
+    const texts = [...UNSORTED, "AUTO"];
+    const run = runStringSort(texts, { array, registers: { b: 5 } });
 
     expect(run).toChangeOnly({ address: array, length: 10 });
-    expect(textsOf(run.memory(array, 10), texts, STRINGS)).toEqual([
-      "MEMORY",
-      "MERGE",
-      "MODE",
-      "MOVE",
-      "MOVER",
-    ]);
+    expect(textsOf(run.memory(array, 10), texts)).toEqual(SORTED);
   });
 
   it("leaves IX and IY as they are", () => {
-    expect(
-      runStringSort(["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"], ARRAY, STRINGS, {
-        registers: { ix: 0x1234, iy: 0x5678 },
-      }),
-    ).toHaveRegisters({ ix: 0x1234, iy: 0x5678 });
+    expect(runStringSort(UNSORTED, { registers: { ix: 0x1234, iy: 0x5678 } })).toHaveRegisters({
+      ix: 0x1234,
+      iy: 0x5678,
+    });
   });
-
-  // n strings with the same k letters, then a last letter that tells them
-  // apart, in order: each comparison finds k equal letters, then two different ones.
-  function withPrefix(n: number, k: number) {
-    return Array.from({ length: n }, (_, i) => "A".repeat(k) + String.fromCharCode(i));
-  }
 
   // Each key stops at its first comparison.
   it.each([
@@ -197,10 +165,10 @@ describe("string_sort", () => {
     [16, 8],
     [128, 0],
     [128, 8],
-  ])("sorts %i reversed pointers after %i equal letters in n(n − 1)/2 · (79 + 14k) + 37(n − 1) + 7 NOPs at most", (n, k) => {
-    const run = runStringSort(withPrefix(n, k).reverse(), ARRAY, STRINGS, { nopLimit: 2_000_000 });
+  ])("sorts %i reversed pointers after %i equal letters in (n − 1)(n(79 + 14k)/2 + 37) + 7 NOPs at most", (n, k) => {
+    const run = runStringSort(withPrefix(n, k).reverse(), { nopLimit: 2_000_000 });
 
-    expect(run.nops).toBeLessThanOrEqual(((n * (n - 1)) / 2) * (79 + 14 * k) + 37 * (n - 1) + 7);
+    expect(run.nops).toBeLessThanOrEqual((n - 1) * ((n * (79 + 14 * k)) / 2 + 37) + 7);
   });
 
   // A key never moves past a string equal to it: each key stops at its first
@@ -212,9 +180,9 @@ describe("string_sort", () => {
     [16, 8],
     [128, 1],
     [128, 8],
-  ])("sorts %i pointers to equal strings of %i letters in (n − 1)(74 + 14L) + 7 NOPs at most", (n, length) => {
-    const equal = Array.from({ length: n }, () => "A".repeat(length));
+  ])("sorts %i pointers to equal strings of %i letters in (n − 1)(74 + 14L) + 7 NOPs at most", (n, L) => {
+    const equal = Array.from({ length: n }, () => "A".repeat(L));
 
-    expect(runStringSort(equal).nops).toBeLessThanOrEqual((n - 1) * (74 + 14 * length) + 7);
+    expect(runStringSort(equal).nops).toBeLessThanOrEqual((n - 1) * (74 + 14 * L) + 7);
   });
 });
