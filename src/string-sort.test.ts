@@ -202,4 +202,19 @@ describe("string_sort", () => {
 
     expect(run.nops).toBeLessThanOrEqual(((n * (n - 1)) / 2) * (79 + 14 * k) + 37 * (n - 1) + 7);
   });
+
+  // A key never moves past a string equal to it: each key stops at its first
+  // comparison, which reads the L letters of both strings.
+  it.each([
+    [2, 1],
+    [2, 8],
+    [16, 1],
+    [16, 8],
+    [128, 1],
+    [128, 8],
+  ])("sorts %i pointers to equal strings of %i letters in (n − 1)(74 + 14L) + 7 NOPs at most", (n, length) => {
+    const equal = Array.from({ length: n }, () => "A".repeat(length));
+
+    expect(runStringSort(equal).nops).toBeLessThanOrEqual((n - 1) * (74 + 14 * length) + 7);
+  });
 });
