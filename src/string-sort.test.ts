@@ -66,4 +66,14 @@ describe("string_sort", () => {
       "MOVE",
     ]);
   });
+
+  it("sorts five pointers in any order", () => {
+    expect(sortStrings(["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"])).toEqual([
+      "MEMORY",
+      "MERGE",
+      "MODE",
+      "MOVE",
+      "MOVER",
+    ]);
+  });
 });
