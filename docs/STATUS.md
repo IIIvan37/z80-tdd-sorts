@@ -21,7 +21,7 @@ Le refactor `07-refactor` appelle deux fois une passe `.pass`, avec les clés en
 Budget : 122n + 13 406 NOPs pour toute entrée, car aucun branchement ne dépend des clés.
 Les branches `intro`, `selection`, `insertion`, `bubble`, `counting`, `radix` et `strcmp` sont poussées avec leurs tags, et figées.
 Les articles d'`intro`, des trois tris simples, du comptage et du radix, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
-L'article FR et EN de `strcmp` (`tdd-cpc-strcmp`) est écrit et revu, livré par la PR blog #13.
+L'article FR et EN de `strcmp` (`tdd-cpc-strcmp`) est en ligne, livré par la PR blog #13.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
 Les articles du blog portent des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag, livrés par la PR blog #11.
 Les tags sont dans la ligne de la date. Le schéma du blog exige au moins un tag par article.
@@ -29,11 +29,13 @@ La série continue sur des références vers des données fixes : `strcmp`, puis
 `strcmp` est livrée : branche `strcmp`, 15 étapes, chaînes à bit 7 final, sortie comme `CP`. Revue code-review et `simplify` faites.
 `14-refactor` garde l'octet de S1 dans E. k = lettres égales sur 7 bits avant la lettre qui décide.
 Budgets exacts : lettres différentes 14k + 20, une chaîne finit 14k + 8, chaînes égales 14k + 4 NOPs.
-L'article suivant trie par insertion un tableau de pointeurs vers des chaînes, avec `strcmp`. Son design n'est pas fait.
+Le tri par insertion de pointeurs vers des chaînes a son design (grilling Q1 à Q10, note du coffre `z80-tdd-sorts-tris`).
+Sa branche `strsort` est locale, issue de `strcmp/15-guard`. Seul `strsort/01-red` existe.
+Le tour 4 du grilling (registres, budget) suit la mesure des variantes, après le premier vert avec la boucle.
 
 ## Prochaine action
 
-Lancer le grilling du tri par insertion de pointeurs vers des chaînes, qui appelle `strcmp`.
+Écrire `strsort/02-green` : `string_sort` qui fait `ret`, incluse dans `main.asm`.
 
 ## Questions ouvertes
 
@@ -48,24 +50,22 @@ Lancer le grilling du tri par insertion de pointeurs vers des chaînes, qui appe
 - **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 - **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
-- **strcmp** : branche `strcmp`, dernier tag `strcmp/15-guard` · FR et EN dans `blog`, `tdd-cpc-strcmp` (PR blog #13).
+- **strcmp** : branche `strcmp`, dernier tag `strcmp/15-guard` · FR et EN dans `blog`, `tdd-cpc-strcmp` (PR blog #13) · en ligne.
+- **strsort** : branche `strsort` (locale), dernier tag `strsort/01-red` · article pas écrit, slug prévu `tdd-cpc-string-sort`.
 
 ## Historique
 
 - 2026-10-24 · **intro-steps** : dépôt créé, 11 étapes TDD de `find_min` taguées, convention des tags avec `guard`.
 - 2026-10-24 · **publication** : article FR et EN, dépôt public, articles déplacés dans `blog` (Astro sur Netlify).
 - 2026-10-24 · **selection** : lockfile corrigé (PR #6), tri par sélection en 10 étapes, article FR et EN avec la complexité.
-- 2026-10-24 · **insertion, insertion-push** : grilling Q1 à Q13, 15 étapes, guards prouvés par mutants (PR #8), `insertion` poussée.
-- 2026-10-24 · **texte-insertion** : article FR et EN du tri par insertion (PR blog #8), revue code-review, rapport livré par la PR #9.
-- 2026-10-24 · **bubble** : grilling Q1 à Q9, dix variantes mesurées, tri à bulles en 13 étapes, guards prouvés par mutants (PR #10).
-- 2026-10-24 · **texte-bubble** : article FR et EN du tri à bulles (PR blog #9), mesures refaites, revue code-review.
+- 2026-10-24 · **insertion, -push, texte-insertion** : grilling Q1 à Q13, 15 étapes, guards prouvés par mutants, article (PR blog #8).
+- 2026-10-24 · **bubble, texte-bubble** : grilling Q1 à Q9, dix variantes mesurées, 13 étapes, guards par mutants, article (PR blog #9).
 - 2026-10-24 · **counting** : PR #9 à #12 fusionnées, grilling Q1 à Q13, tri par comptage en 13 étapes, guards prouvés par mutants.
 - 2026-10-24 · **texte-counting, -push** : article FR et EN du comptage avec graphique SVG, revue code-review, publié (PR blog #10).
-- 2026-10-24 · **tags** : grilling des tags Q1 à Q6, `feat/tags` dans `blog`, code-review et simplify, PR blog #11, radix en pause.
-- 2026-10-24 · **radix-grilling, radix-start** : design du radix accepté en 4 tours, branche `radix` ouverte, étapes `01` et `02`.
-- 2026-10-24 · **radix-steps** : étapes `03-red` à `10-guard`, refactor par clés inversées, guards prouvés par mutants, `radix` poussée (PR #15).
+- 2026-10-24 · **radix-grilling, -start, -steps** : design en 4 tours, 10 étapes, refactor par clés inversées, guards par mutants (PR #15).
 - 2026-10-24 · **texte-radix** : article FR et EN du radix (PR blog #12), mutants relancés, coûts vérifiés, revue code-review.
-- 2026-10-24 · **tags-merge** : Q3(1) tranchée (tags dans la ligne de la date), merge testé par un build, PR blog #11 fusionnée.
+- 2026-10-24 · **tags, tags-merge** : grilling des tags Q1 à Q6, code-review et simplify, tags dans la ligne de la date, PR blog #11 fusionnée.
 - 2026-10-24 · **strcmp** : série des chaînes choisie, `strcmp` en 14 étapes locales, code-review et 3 corrections, `simplify`.
 - 2026-10-24 · **strcmp-push** : grilling Q1 à Q8, version E en `14-refactor`, trois bornes exactes en `15-guard`, `strcmp` poussée.
 - 2026-10-24 · **texte-strcmp** : article FR et EN de `strcmp` (PR blog #13), sorties et mutants relancés, revue code-review, 2 corrections de fond.
+- 2026-10-25 · **strsort-grilling** : design du tri de pointeurs en 3 tours (Q1 à Q10), branche `strsort` ouverte, `01-red`.
