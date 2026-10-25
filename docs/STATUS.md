@@ -19,7 +19,7 @@ Budgets : égaux (pire cas) 20n + 2 572, triée et inversée 19n + 2 573 NOPs. L
 Le radix sort est livré : branche `radix`, 10 étapes, clés de 16 bits, LSD en base 256, deux passes, buffer en DE.
 Le refactor `07-refactor` appelle deux fois une passe `.pass`, avec les clés en big-endian dans le buffer.
 Budget : 122n + 13 406 NOPs pour toute entrée, car aucun branchement ne dépend des clés.
-Les branches `intro`, `selection`, `insertion`, `bubble`, `counting`, `radix` et `strcmp` sont poussées avec leurs tags, et figées.
+Les branches `intro`, `selection`, `insertion`, `bubble`, `counting`, `radix`, `strcmp` et `strsort` sont poussées avec leurs tags, et figées.
 Les articles d'`intro`, des trois tris simples, du comptage et du radix, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article FR et EN de `strcmp` (`tdd-cpc-strcmp`) est en ligne, livré par la PR blog #13.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
@@ -30,15 +30,15 @@ La série continue sur des références vers des données fixes : `strcmp`, puis
 `14-refactor` garde l'octet de S1 dans E. k = lettres égales sur 7 bits avant la lettre qui décide.
 Budgets exacts : lettres différentes 14k + 20, une chaîne finit 14k + 8, chaînes égales 14k + 4 NOPs.
 Le tri par insertion de pointeurs vers des chaînes a son design (grilling Q1 à Q10, note du coffre `z80-tdd-sorts-tris`).
-Sa branche `strsort` est locale, issue de `strcmp/15-guard`, et va de `01-red` à `17-guard` : boucle, stabilité, page, bornes, budgets.
+Sa branche `strsort`, issue de `strcmp/15-guard`, va de `01-red` à `18-refactor` : boucle, stabilité, page, bornes, budgets, helpers.
 Code : clé et trou sur la pile pendant `call strcmp`, C compte la suite triée, B borne les décalages par `djnz`. IX et IY ne changent pas.
 Le tour 4 a gardé ce code après la mesure de 8 variantes : le tableau est dans le rapport `strsort-measure`.
-Budgets exacts : triée (n − 1)(90 + 14k) + 7, inversée n(n − 1)/2 · (79 + 14k) + 37(n − 1) + 7, égales (n − 1)(74 + 14L) + 7 NOPs.
-La revue code-review est faite : Spec sans défaut, Standards sans violation dure, sept remarques sur des commentaires et les tests.
+Budgets exacts : triée (n − 1)(90 + 14k) + 7, inversée (n − 1)(n(79 + 14k)/2 + 37) + 7, égales (n − 1)(74 + 14L) + 7 NOPs.
+Revue code-review faite, ses sept remarques corrigées : commentaires dans les étapes (tags `06` à `17` reconstruits), `simplify` en `18-refactor`.
 
 ## Prochaine action
 
-Corriger les remarques de la revue de `strsort` selon la réponse d'Ivan (question dans le dernier rapport).
+Écrire l'article FR et EN `tdd-cpc-string-sort` dans `blog`, sur le code de `strsort/18-refactor`.
 
 ## Questions ouvertes
 
@@ -54,7 +54,7 @@ Corriger les remarques de la revue de `strsort` selon la réponse d'Ivan (questi
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 - **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
 - **strcmp** : branche `strcmp`, dernier tag `strcmp/15-guard` · FR et EN dans `blog`, `tdd-cpc-strcmp` (PR blog #13) · en ligne.
-- **strsort** : branche `strsort` (locale), dernier tag `strsort/17-guard` · article pas écrit, slug prévu `tdd-cpc-string-sort`.
+- **strsort** : branche `strsort`, dernier tag `strsort/18-refactor` · article pas écrit, slug prévu `tdd-cpc-string-sort`.
 
 ## Historique
 
@@ -67,5 +67,5 @@ Corriger les remarques de la revue de `strsort` selon la réponse d'Ivan (questi
 - 2026-10-24 · **radix-grilling, -start, -steps, texte-radix** : design en 4 tours, 10 étapes, guards par mutants (PR #15), article (PR blog #12).
 - 2026-10-24 · **tags, tags-merge** : grilling des tags Q1 à Q6, code-review et simplify, tags dans la ligne de la date, PR blog #11 fusionnée.
 - 2026-10-24 · **strcmp, -push, texte-strcmp** : 15 étapes, version E en `14-refactor`, bornes exactes, revues, article (PR blog #13).
-- 2026-10-25 · **strsort-grilling, -steps** : design en 3 tours (Q1 à Q10), étapes `01-red` à `13-guard`, guards prouvés par mutants.
-- 2026-10-25 · **strsort-measure** : 8 variantes mesurées, tour 4 (Q1 à Q7), guards `14` à `17` (IX/IY, budgets), code-review.
+- 2026-10-25 · **strsort-grilling, -steps, -measure** : design en 4 tours, 8 variantes mesurées, `01-red` à `17-guard`, guards par mutants, code-review.
+- 2026-10-25 · **strsort-tags-push** : remarques de la revue corrigées, tags `06` à `17` reconstruits, `18-refactor`, `strsort` poussée.
