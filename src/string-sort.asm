@@ -1,3 +1,7 @@
+; Sorts the n pointers of the array at HL, B = n from 1 to 255, in the order of
+; their strings, as strcmp compares them. Each pointer takes two bytes, low byte
+; first. The strings do not move. Two pointers to equal strings keep their
+; order. AF, BC, DE and HL change, IX and IY do not.
 string_sort:
  dec b          ; one pass for each pointer but the first
  ret z

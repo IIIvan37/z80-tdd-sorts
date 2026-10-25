@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { loadProgram, type Program, runMatchers } from "z80-tdd";
+import { loadProgram, type Program, runMatchers, type StartRegisters } from "z80-tdd";
 
 expect.extend(runMatchers);
 
@@ -31,10 +31,10 @@ describe("string_sort", () => {
   }
 
   // Runs string_sort on pointers to `texts`. The array at `array` holds a
-  // little-endian pointer to each string.
-  function runStringSort(texts: string[], array = ARRAY, strings = STRINGS) {
+  // little-endian pointer to each string. `registers` sets the others.
+  function runStringSort(texts: string[], array = ARRAY, strings = STRINGS, registers: StartRegisters = {}) {
     return program.run("string_sort", {
-      registers: { hl: array, b: texts.length },
+      registers: { ...registers, hl: array, b: texts.length },
       memory: [
         { at: array, bytes: startsOf(texts, strings).flatMap((at) => [at & 0xff, at >> 8]) },
         { at: strings, bytes: texts.flatMap(bytesOf) },
@@ -153,5 +153,11 @@ describe("string_sort", () => {
       "MOVE",
       "MOVER",
     ]);
+  });
+
+  it("leaves IX and IY as they are", () => {
+    expect(
+      runStringSort(["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"], ARRAY, STRINGS, { ix: 0x1234, iy: 0x5678 }),
+    ).toHaveRegisters({ ix: 0x1234, iy: 0x5678 });
   });
 });
