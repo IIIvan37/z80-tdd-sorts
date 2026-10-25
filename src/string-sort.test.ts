@@ -129,4 +129,29 @@ describe("string_sort", () => {
       "MOVER",
     ]);
   });
+
+  it("ignores a pointer to a smaller string right after the array", () => {
+    // Right after the array, a pointer to AUTO, which comes before every string
+    // of the array: a pass too many would move it. The array starts at #80FD, so
+    // its second pointer lies across the end of the page: an inc l in place of an
+    // inc hl would read its high byte at #8000, not at #8100.
+    const array = 0x80fd;
+    const texts = ["MOVE", "MERGE", "MOVER", "MEMORY", "MODE", "AUTO"];
+    const run = program.run("string_sort", {
+      registers: { hl: array, b: 5 },
+      memory: [
+        { at: array, bytes: startsOf(texts, STRINGS).flatMap((at) => [at & 0xff, at >> 8]) },
+        { at: STRINGS, bytes: texts.flatMap(bytesOf) },
+      ],
+    });
+
+    expect(run).toChangeOnly({ address: array, length: 10 });
+    expect(textsOf(run.memory(array, 10), texts, STRINGS)).toEqual([
+      "MEMORY",
+      "MERGE",
+      "MODE",
+      "MOVE",
+      "MOVER",
+    ]);
+  });
 });
