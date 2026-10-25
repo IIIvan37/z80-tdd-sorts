@@ -9,7 +9,6 @@ Le dépôt porte un projet CPC vide sur `main`, testé avec z80-tdd 0.1.0 (tarba
 Chaque article a sa branche figée, avec un tag par étape TDD. La convention est dans le [README](../README.md).
 Les tags `intro/*` gardent l'ancien lockfile : le README donne `--no-lockfile`.
 Le tri par sélection est livré : branche `selection`, 10 étapes. Pire cas mesuré : octets égaux, 6n² + 35n − 36 NOPs.
-Mesures hors tests : triée 5n² + 36n − 36, inversée ⌊11n²/2⌋ + 36n − 36 NOPs.
 Le tri par insertion est livré : branche `insertion`, 15 étapes, décalage par `LDD` en `11-refactor`.
 Budgets : trié et égaux 33n − 26, inversé 6n² + 22n − 21 NOPs.
 Le tri à bulles est livré : branche `bubble`, 13 étapes, algorithme B de Knuth avec la bulle portée dans E.
@@ -21,24 +20,23 @@ Le refactor `07-refactor` appelle deux fois une passe `.pass`, avec les clés en
 Budget : 122n + 13 406 NOPs pour toute entrée, car aucun branchement ne dépend des clés.
 Les branches `intro`, `selection`, `insertion`, `bubble`, `counting`, `radix`, `strcmp` et `strsort` sont poussées avec leurs tags, et figées.
 Les articles d'`intro`, des trois tris simples, du comptage et du radix, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
-L'article FR et EN de `strcmp` (`tdd-cpc-strcmp`) est en ligne, livré par la PR blog #13.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
 Les articles portent des tags (`z80`, `cpc`, `tdd`, `sorting`) dans la ligne de la date, une page par tag, au moins un par article (PR blog #11).
 La série continue sur des références vers des données fixes : `strcmp`, puis un tri de pointeurs vers des chaînes.
 `strcmp` est livrée : branche `strcmp`, 15 étapes, chaînes à bit 7 final, sortie comme `CP`. Revue code-review et `simplify` faites.
 `14-refactor` garde l'octet de S1 dans E. k = lettres égales sur 7 bits avant la lettre qui décide.
 Budgets exacts : lettres différentes 14k + 20, une chaîne finit 14k + 8, chaînes égales 14k + 4 NOPs.
-Le tri par insertion de pointeurs vers des chaînes a son design (grilling Q1 à Q10, note du coffre `z80-tdd-sorts-tris`).
+Le tri par insertion de pointeurs vers des chaînes est livré (design : note du coffre `z80-tdd-sorts-tris`).
 Sa branche `strsort`, issue de `strcmp/15-guard`, va de `01-red` à `18-refactor` : boucle, stabilité, page, bornes, budgets, helpers.
 Code : clé et trou sur la pile pendant `call strcmp`, C compte la suite triée, B borne les décalages par `djnz`. IX et IY ne changent pas.
 Le tour 4 a gardé ce code après la mesure de 8 variantes : le tableau est dans le rapport `strsort-measure`.
 Budgets exacts : triée (n − 1)(90 + 14k) + 7, inversée (n − 1)(n(79 + 14k)/2 + 37) + 7, égales (n − 1)(74 + 14L) + 7 NOPs.
-Revue code-review faite, ses sept remarques corrigées : commentaires dans les étapes (tags `06` à `17` reconstruits), `simplify` en `18-refactor`.
-L'article FR et EN `tdd-cpc-string-sort` est écrit dans `blog` (branche `docs/string-sort-post`, build vert). Sa revue est faite, pas corrigée.
+L'article FR et EN `tdd-cpc-string-sort` est livré par la PR blog #14, revues corrigées. Il garde six variantes sur huit dans son tableau.
+Sa conclusion annonce l'article suivant : paires (clé, index) triées par une passe de comptage stable (option 3 du plan).
 
 ## Prochaine action
 
-Corriger l'article `tdd-cpc-string-sort` dans `blog` avec les remarques des deux revues du dernier rapport, puis push et PR blog.
+Cadrer l'article suivant par un grilling : paires (clé, index) triées par une passe de comptage stable.
 
 ## Questions ouvertes
 
@@ -54,12 +52,11 @@ Corriger l'article `tdd-cpc-string-sort` dans `blog` avec les remarques des deux
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 - **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
 - **strcmp** : branche `strcmp`, dernier tag `strcmp/15-guard` · FR et EN dans `blog`, `tdd-cpc-strcmp` (PR blog #13) · en ligne.
-- **strsort** : branche `strsort`, dernier tag `strsort/18-refactor` · FR et EN dans `blog`, `tdd-cpc-string-sort` · écrit, en revue, pas en ligne.
+- **strsort** : branche `strsort`, dernier tag `strsort/18-refactor` · FR et EN dans `blog`, `tdd-cpc-string-sort` (PR blog #14) · en ligne.
 
 ## Historique
 
-- 2026-10-24 · **intro-steps** : dépôt créé, 11 étapes TDD de `find_min` taguées, convention des tags avec `guard`.
-- 2026-10-24 · **publication** : article FR et EN, dépôt public, articles déplacés dans `blog` (Astro sur Netlify).
+- 2026-10-24 · **intro-steps, publication** : dépôt créé, 11 étapes de `find_min`, tags avec `guard`, article, dépôt public, `blog` sur Netlify.
 - 2026-10-24 · **selection** : lockfile corrigé (PR #6), tri par sélection en 10 étapes, article FR et EN avec la complexité.
 - 2026-10-24 · **insertion, -push, texte-insertion** : grilling Q1 à Q13, 15 étapes, guards prouvés par mutants, article (PR blog #8).
 - 2026-10-24 · **bubble, texte-bubble** : grilling Q1 à Q9, dix variantes mesurées, 13 étapes, guards par mutants, article (PR blog #9).
@@ -68,4 +65,4 @@ Corriger l'article `tdd-cpc-string-sort` dans `blog` avec les remarques des deux
 - 2026-10-24 · **tags, tags-merge** : grilling des tags Q1 à Q6, code-review et simplify, tags dans la ligne de la date, PR blog #11 fusionnée.
 - 2026-10-24 · **strcmp, -push, texte-strcmp** : 15 étapes, version E en `14-refactor`, bornes exactes, revues, article (PR blog #13).
 - 2026-10-25 · **strsort-grilling, -steps, -measure, -tags-push** : design en 4 tours, 8 variantes mesurées, 18 étapes, revue, `strsort` poussée.
-- 2026-10-25 · **texte-strsort** : article FR et EN du tri de pointeurs, sorties et mutants relancés, coûts vérifiés, revue lancée.
+- 2026-10-25 · **texte-strsort, -push** : article FR et EN du tri de pointeurs, mutants relancés, revue corrigée, PR blog #14.
