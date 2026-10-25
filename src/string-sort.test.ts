@@ -42,12 +42,21 @@ describe("string_sort", () => {
     });
   }
 
+  // The texts that the little-endian pointers in `bytes` point to, in their
+  // order. Each of `texts` starts where startsOf puts it.
+  function textsOf(bytes: readonly number[], texts: string[], strings: number) {
+    const starts = startsOf(texts, strings);
+    return Array.from(
+      { length: bytes.length / 2 },
+      (_, i) => texts[starts.indexOf(bytes[2 * i] | (bytes[2 * i + 1] << 8))],
+    );
+  }
+
   // Runs string_sort on pointers to `texts`, and returns the texts in the order
   // of the pointers the array holds after the run.
   function sortStrings(texts: string[], array = ARRAY, strings = STRINGS) {
-    const starts = startsOf(texts, strings);
     const bytes = runStringSort(texts, array, strings).memory(array, 2 * texts.length);
-    return texts.map((_, i) => texts[starts.indexOf(bytes[2 * i] | (bytes[2 * i + 1] << 8))]);
+    return textsOf(bytes, texts, strings);
   }
 
   it("leaves a one-pointer array as it is", () => {
@@ -89,6 +98,30 @@ describe("string_sort", () => {
   // then the other.
   it.each(["80FC", "80FD"])("sorts pointers and strings that cross a page, from #%s", (array) => {
     expect(sortStrings(["MODE", "MOVER", "MOVE", "MEMORY", "MERGE"], parseInt(array, 16), 0x90fa)).toEqual([
+      "MEMORY",
+      "MERGE",
+      "MODE",
+      "MOVE",
+      "MOVER",
+    ]);
+  });
+
+  it("ignores a pointer to a larger string right before the array", () => {
+    // The pointer right before the array, at ARRAY, points to ZONE, which comes
+    // after every string of the array: a shift past the first pointer would move
+    // it. Fresh memory would hold #0000 there, a pointer to #00, which comes before
+    // every string: no key would move past it.
+    const texts = ["ZONE", "MOVE", "MERGE", "MOVER", "MEMORY", "MODE"];
+    const run = program.run("string_sort", {
+      registers: { hl: ARRAY + 2, b: 5 },
+      memory: [
+        { at: ARRAY, bytes: startsOf(texts, STRINGS).flatMap((at) => [at & 0xff, at >> 8]) },
+        { at: STRINGS, bytes: texts.flatMap(bytesOf) },
+      ],
+    });
+
+    expect(run).toChangeOnly({ address: ARRAY + 2, length: 10 });
+    expect(textsOf(run.memory(ARRAY + 2, 10), texts, STRINGS)).toEqual([
       "MEMORY",
       "MERGE",
       "MODE",
