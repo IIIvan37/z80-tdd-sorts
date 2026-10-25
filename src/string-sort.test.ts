@@ -160,4 +160,22 @@ describe("string_sort", () => {
       runStringSort(["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"], ARRAY, STRINGS, { ix: 0x1234, iy: 0x5678 }),
     ).toHaveRegisters({ ix: 0x1234, iy: 0x5678 });
   });
+
+  // n strings with the same k letters, then a last letter that tells them
+  // apart, in order: each comparison finds k equal letters, then two different ones.
+  function withPrefix(n: number, k: number) {
+    return Array.from({ length: n }, (_, i) => "A".repeat(k) + String.fromCharCode(i));
+  }
+
+  // Each key stops at its first comparison.
+  it.each([
+    [2, 0],
+    [2, 8],
+    [16, 0],
+    [16, 8],
+    [128, 0],
+    [128, 8],
+  ])("sorts %i sorted pointers after %i equal letters in (n − 1)(90 + 14k) + 7 NOPs at most", (n, k) => {
+    expect(runStringSort(withPrefix(n, k)).nops).toBeLessThanOrEqual((n - 1) * (90 + 14 * k) + 7);
+  });
 });
