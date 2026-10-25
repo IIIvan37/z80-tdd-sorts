@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { loadProgram, type Program, runMatchers, type StartRegisters } from "z80-tdd";
+import { loadProgram, type Program, type RunOptions, runMatchers } from "z80-tdd";
 
 expect.extend(runMatchers);
 
@@ -31,10 +31,17 @@ describe("string_sort", () => {
   }
 
   // Runs string_sort on pointers to `texts`. The array at `array` holds a
-  // little-endian pointer to each string. `registers` sets the others.
-  function runStringSort(texts: string[], array = ARRAY, strings = STRINGS, registers: StartRegisters = {}) {
+  // little-endian pointer to each string. `options` sets the other registers
+  // and the NOP limit.
+  function runStringSort(
+    texts: string[],
+    array = ARRAY,
+    strings = STRINGS,
+    options: Pick<RunOptions, "registers" | "nopLimit"> = {},
+  ) {
     return program.run("string_sort", {
-      registers: { ...registers, hl: array, b: texts.length },
+      ...options,
+      registers: { ...options.registers, hl: array, b: texts.length },
       memory: [
         { at: array, bytes: startsOf(texts, strings).flatMap((at) => [at & 0xff, at >> 8]) },
         { at: strings, bytes: texts.flatMap(bytesOf) },
@@ -157,7 +164,9 @@ describe("string_sort", () => {
 
   it("leaves IX and IY as they are", () => {
     expect(
-      runStringSort(["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"], ARRAY, STRINGS, { ix: 0x1234, iy: 0x5678 }),
+      runStringSort(["MOVE", "MERGE", "MOVER", "MEMORY", "MODE"], ARRAY, STRINGS, {
+        registers: { ix: 0x1234, iy: 0x5678 },
+      }),
     ).toHaveRegisters({ ix: 0x1234, iy: 0x5678 });
   });
 
@@ -177,5 +186,20 @@ describe("string_sort", () => {
     [128, 8],
   ])("sorts %i sorted pointers after %i equal letters in (n − 1)(90 + 14k) + 7 NOPs at most", (n, k) => {
     expect(runStringSort(withPrefix(n, k)).nops).toBeLessThanOrEqual((n - 1) * (90 + 14 * k) + 7);
+  });
+
+  // Each key moves past the whole sorted run, with no comparison to stop it.
+  // 128 reversed pointers after 8 equal letters take more than a million NOPs.
+  it.each([
+    [2, 0],
+    [2, 8],
+    [16, 0],
+    [16, 8],
+    [128, 0],
+    [128, 8],
+  ])("sorts %i reversed pointers after %i equal letters in n(n − 1)/2 · (79 + 14k) + 37(n − 1) + 7 NOPs at most", (n, k) => {
+    const run = runStringSort(withPrefix(n, k).reverse(), ARRAY, STRINGS, { nopLimit: 2_000_000 });
+
+    expect(run.nops).toBeLessThanOrEqual(((n * (n - 1)) / 2) * (79 + 14 * k) + 37 * (n - 1) + 7);
   });
 });
