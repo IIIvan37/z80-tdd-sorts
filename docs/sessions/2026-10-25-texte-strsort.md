@@ -22,7 +22,15 @@
 - Limite par défaut d'un Run : 1 000 000 NOPs (`node_modules/z80-tdd/dist/configuration-file.js:43`). Cas le plus long : 1 557 154 NOPs.
 - Variantes de la mesure récupérées du scratchpad d'une session passée (worktree `strsort-measure` encore présent), copiées dans `measure-old/`.
 - `pnpm build` du blog vert, deux pages `tdd-cpc-string-sort`. Commit `a97a3bd` sur `docs/string-sort-post`, sans attribution.
-- Revue `mattpocock-skills:code-review` lancée (Standards et Spec, deux agents en fond) : résultats non reçus avant ce rapport.
+- Revue `mattpocock-skills:code-review` lancée (deux agents en fond). Standards reçue après le premier commit de ce rapport : aucune violation dure.
+  Remarques, numéros de ligne du FR et de l'EN :
+  1. l.311 : le bloc d'erreur de `11-red` suit une phrase qui ne finit pas par « : » (règle sikorama du coffre).
+  2. l.2 : le titre n'a pas d'angle (« TDD sur CPC : <sujet>, <angle> » dans la série). La conclusion n'annonce aucun article suivant.
+  3. EN l.227 : « Two MODE » → « Two MODEs ». FR l.390 : « la neuvième version cassée de la page » → « du guard de page ».
+  4. « à k = 0 » apparaît dans « Huit façons » (l.412, 425 à 427) avant la définition de k (l.469).
+  5. Longueur : environ 2 850 mots de prose contre 1 900 à 2 070. Coupes possibles : le paragraphe du `17-guard` qui double `strcmp` (l.555),
+     les deux variantes écartées par principe dans le tableau, le paragraphe « passe de trop » du `13-guard` (l.390).
+  La revue Spec tournait encore au moment de ce commit.
 
 ## Non fait / reste
 
@@ -46,11 +54,11 @@
 
 ## État pour reprendre
 
-- **Prochaine action :** lire la revue de l'article `tdd-cpc-string-sort` (relancer `mattpocock-skills:code-review` sur `blog`, depuis `origin/main`), puis corriger.
+- **Prochaine action :** relancer la seule revue Spec de l'article `tdd-cpc-string-sort` (`blog`, depuis `origin/main`), puis corriger avec les remarques Standards ci-dessus.
 - **Arbre :** `blog` sur `docs/string-sort-post`, propre, non poussée · `z80-tdd-sorts` sur `strsort`, figée · PR #17 à #23 ouvertes, empilées ;
   ce rapport s'empile sur #23.
 - **Pièges :**
-  - Les agents de revue tournaient au moment du rapport. Après `/clear`, leurs résultats sont perdus : relancer la revue.
+  - L'agent de la revue Spec tournait au moment du rapport. Après `/clear`, son résultat est perdu : le relancer.
   - Deux worktrees jetables dans le scratchpad de cette session (`wt` détaché, `wt-docs` pour ce rapport). Le worktree `strsort-measure`
     d'une session passée existe encore. `git worktree prune` après leur suppression.
   - `rasm -v` affiche v3.0.8 sur ce Mac, le README demande v3.3.1. Les tests passent. Écart non traité.

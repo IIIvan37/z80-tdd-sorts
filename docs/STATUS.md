@@ -38,7 +38,7 @@ L'article FR et EN `tdd-cpc-string-sort` est écrit dans `blog` (branche `docs/s
 
 ## Prochaine action
 
-Relancer `mattpocock-skills:code-review` sur `blog` (`docs/string-sort-post` depuis `origin/main`), puis corriger l'article `tdd-cpc-string-sort`.
+Relancer la revue Spec de `tdd-cpc-string-sort` (`blog`, depuis `origin/main`), puis corriger avec les remarques Standards du dernier rapport.
 
 ## Questions ouvertes
 
