@@ -19,15 +19,19 @@ Budgets : égaux (pire cas) 20n + 2 572, triée et inversée 19n + 2 573 NOPs. L
 Le radix sort est livré : branche `radix`, 10 étapes, clés de 16 bits, LSD en base 256, deux passes, buffer en DE.
 Le refactor `07-refactor` appelle deux fois une passe `.pass`, avec les clés en big-endian dans le buffer.
 Budget : 122n + 13 406 NOPs pour toute entrée, car aucun branchement ne dépend des clés.
-Les branches `intro`, `selection`, `insertion`, `bubble`, `counting` et `radix` sont poussées avec leurs tags, et figées.
+Les branches `intro`, `selection`, `insertion`, `bubble`, `counting`, `radix` et `strcmp` sont poussées avec leurs tags, et figées.
 Les articles d'`intro`, des trois tris simples, du comptage et du radix, en français et en anglais, sont en ligne dans le dépôt `IIIvan37/blog`.
 L'article du comptage porte un graphique SVG des quatre tris sur l'entrée inversée, écrit par `blog/scripts/sort-chart.mjs`.
 Les articles du blog portent des tags (`z80`, `cpc`, `tdd`, `sorting`), avec une page par tag, livrés par la PR blog #11.
 Les tags sont dans la ligne de la date. Le schéma du blog exige au moins un tag par article.
+La série continue sur des références vers des données fixes : `strcmp`, puis un tri de pointeurs vers des chaînes.
+`strcmp` est livrée : branche `strcmp`, 15 étapes, chaînes à bit 7 final, sortie comme `CP`. Revue code-review et `simplify` faites.
+`14-refactor` garde l'octet de S1 dans E. k = lettres égales sur 7 bits avant la lettre qui décide.
+Budgets exacts : lettres différentes 14k + 20, une chaîne finit 14k + 8, chaînes égales 14k + 4 NOPs.
 
 ## Prochaine action
 
-Choisir le prochain article de la série.
+Écrire l'article FR et EN de `strcmp` dans `blog`, avec k défini comme les lettres égales sur 7 bits.
 
 ## Questions ouvertes
 
@@ -42,6 +46,7 @@ Choisir le prochain article de la série.
 - **bubble** : branche `bubble`, dernier tag `bubble/13-guard` · FR et EN dans `blog`, `tdd-cpc-bubble-sort` (PR blog #9) · en ligne.
 - **counting** : branche `counting`, dernier tag `counting/13-guard` · FR et EN dans `blog`, `tdd-cpc-counting-sort` (PR blog #10) · en ligne.
 - **radix** : branche `radix`, dernier tag `radix/10-guard` · FR et EN dans `blog`, `tdd-cpc-radix-sort` (PR blog #12) · en ligne.
+- **strcmp** : branche `strcmp`, dernier tag `strcmp/15-guard` · article non écrit.
 
 ## Historique
 
@@ -57,8 +62,9 @@ Choisir le prochain article de la série.
 - 2026-10-24 · **texte-counting** : article FR et EN du comptage avec graphique SVG, mutants relancés, sans mention de Roudoudou.
 - 2026-10-24 · **texte-counting-push** : revue code-review, trois corrections, article du comptage publié (PR blog #10).
 - 2026-10-24 · **tags** : grilling des tags Q1 à Q6, `feat/tags` dans `blog`, code-review et simplify, PR blog #11, radix en pause.
-- 2026-10-24 · **radix-grilling** : tour 1 du radix confirmé, tours 2 à 4 acceptés (contrat, tables, tests, budgets, article).
-- 2026-10-24 · **radix-start** : design du radix confirmé, branche `radix` ouverte, étapes `01-red` et `02-green`.
+- 2026-10-24 · **radix-grilling, radix-start** : design du radix accepté en 4 tours, branche `radix` ouverte, étapes `01` et `02`.
 - 2026-10-24 · **radix-steps** : étapes `03-red` à `10-guard`, refactor par clés inversées, guards prouvés par mutants, `radix` poussée (PR #15).
 - 2026-10-24 · **texte-radix** : article FR et EN du radix (PR blog #12), mutants relancés, coûts vérifiés, revue code-review.
 - 2026-10-24 · **tags-merge** : Q3(1) tranchée (tags dans la ligne de la date), merge testé par un build, PR blog #11 fusionnée.
+- 2026-10-24 · **strcmp** : série des chaînes choisie, `strcmp` en 14 étapes locales, code-review et 3 corrections, `simplify`.
+- 2026-10-24 · **strcmp-push** : grilling Q1 à Q8, version E en `14-refactor`, trois bornes exactes en `15-guard`, `strcmp` poussée.
